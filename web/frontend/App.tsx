@@ -7,7 +7,9 @@ import { AppBridgeProvider, QueryProvider, PolarisProvider } from './components'
 export default function App() {
   // Any .tsx or .jsx files in /pages will become a route
   // See documentation for <Routes /> for more info
-  const pages = import.meta.globEager('./pages/**/!(*.test.[jt]sx)*.([jt]sx)')
+  const pages = import.meta.glob('./pages/**/!(*.test.[jt]sx)*.([jt]sx)', {
+    eager: true,
+  })
 
   return (
     <PolarisProvider>
@@ -16,13 +18,17 @@ export default function App() {
           <QueryProvider>
             <NavigationMenu
               navigationLinks={[
+                // {
+                //   label: 'Page name',
+                //   destination: '/pagename',
+                // },
                 {
-                  label: 'Page name',
-                  destination: '/pagename',
+                  label: 'Schedule',
+                  destination: '/schedule',
                 },
                 {
-                  label: 'Demo',
-                  destination: '/demo',
+                  label: 'Show Detail',
+                  destination: '/shows',
                 },
               ]}
             />

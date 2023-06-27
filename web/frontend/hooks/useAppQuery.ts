@@ -1,6 +1,14 @@
 import { useAuthenticatedFetch } from './useAuthenticatedFetch'
 import { useMemo } from 'react'
-import { useQuery } from 'react-query'
+import { useQuery, UseQueryResult } from 'react-query'
+
+type AppQueryOptions = {
+  url: string
+  fetchInit?: RequestInit
+  reactQueryOptions?: Parameters<typeof useQuery>[1]
+}
+
+type AppQueryResult<TData> = UseQueryResult<TData, unknown>
 
 /**
  * A hook for querying your custom app data.
@@ -14,16 +22,20 @@ import { useQuery } from 'react-query'
  *
  * @returns Return value of useQuery.  See: https://react-query.tanstack.com/reference/useQuery.
  */
-export const useAppQuery = ({ url, fetchInit = {}, reactQueryOptions }) => {
+export const useAppQuery = <TData>({
+  url,
+  fetchInit = {},
+  reactQueryOptions,
+}: AppQueryOptions): AppQueryResult<TData> => {
   const authenticatedFetch = useAuthenticatedFetch()
   const fetch = useMemo(() => {
     return async () => {
       const response = await authenticatedFetch(url, fetchInit)
-      return response.json()
+      return response.json() as Promise<TData>
     }
   }, [url, JSON.stringify(fetchInit)])
 
-  return useQuery(url, fetch, {
+  return useQuery<TData>(url, fetch, {
     ...reactQueryOptions,
     refetchOnWindowFocus: false,
   })
