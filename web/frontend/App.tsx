@@ -5,6 +5,7 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 import { AppBridgeProvider, QueryProvider, PolarisProvider } from './components'
+import ReactDndProvider from './components/providers/DndProvider'
 
 export default function App() {
   // Any .tsx or .jsx files in /pages will become a route
@@ -18,20 +19,22 @@ export default function App() {
       <BrowserRouter>
         <AppBridgeProvider>
           <QueryProvider>
-            <NavigationMenu
-              navigationLinks={[
-                {
-                  label: 'Schedule',
-                  destination: '/schedule',
-                },
-                {
-                  label: 'Show Detail',
-                  destination: '/shows',
-                },
-              ]}
-            />
-            <Routes pages={pages} />
-            <ToastContainer autoClose={1000} />
+            <ReactDndProvider>
+              <NavigationMenu
+                navigationLinks={[
+                  {
+                    label: 'Schedule',
+                    destination: '/schedule',
+                  },
+                  {
+                    label: 'Show Detail',
+                    destination: '/shows',
+                  },
+                ]}
+              />
+              <Routes pages={pages} />
+              <ToastContainer autoClose={1000} />
+            </ReactDndProvider>
           </QueryProvider>
         </AppBridgeProvider>
       </BrowserRouter>

@@ -48,6 +48,6 @@ model Booking {
 }
 
 model PlayFile {
-  id        Int        @id @default(autoincrement())
+  id        Int        @id
   showtimes Showtime[]
 }
