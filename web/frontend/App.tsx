@@ -33,7 +33,7 @@ export default function App() {
                 ]}
               />
               <Routes pages={pages} />
-              <ToastContainer autoClose={1000} />
+              <ToastContainer autoClose={1000} position="bottom-right" />
             </ReactDndProvider>
           </QueryProvider>
         </AppBridgeProvider>

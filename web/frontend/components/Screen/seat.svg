@@ -1,19 +1,68 @@
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="screenImg" viewBox="0 0 800 908 "><style type="text/css">
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans&amp;display=swap');
-    svg {user-select: none;}
-    g#seatmap text {font-family: 'Noto Sans', 'sans-serif';}
-    g.selected polygon,g.selected circle,g.selected path {fill: #2dbcb6;}
-    g.not polygon,g.not circle,g.not path,g.not text {fill: #4B4B4B;}
-    g.other polygon,g.other circle,g.other path {fill: #ED1A3B;}
-	.st0{font-family:'Noto Sans';}
-	.st1{fill:none;stroke:#000000;stroke-width:4;}
-	.st2{fill:#003300;}
-	.st3{font-size:16px;}
-	.st4{fill:#DAE5DA;}
-	.st5{font-size:20px;}
-	g.selected polygon, g.selected circle, g.selected path {
-    fill: #2dbcb6;
-	}
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 800 908 ">
+<style type="text/css">
+:root {
+  --seat-selected-color: #2dbcb6;
+  --seat-reserved-color: #4B4B4B;
+  --seat-maintain-color: #ED1A3B;
+  --background-color: #DAE5DA;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans&amp;display=swap');
+
+.screenImg .svg {
+  user-select: none;
+}
+
+.screenImg g#seatmap text {
+  font-family: 'Noto Sans', 'sans-serif';
+}
+
+.screenImg g.reserved polygon,
+.screenImg g.reserved circle,
+.screenImg g.reserved path {
+  fill: var(--seat-selected-color);
+}
+
+.screenImg g.not polygon,
+.screenImg g.not circle,
+.screenImg g.not path {
+  fill: var(--seat-reserved-color);
+}
+.screenImg g.not text {
+	fill: gray;
+}
+
+.screenImg g.maintain polygon,
+.screenImg g.maintain circle,
+.screenImg g.maintain path {
+  fill: var(--seat-maintain-color);
+}
+
+.screenImg .st0 {
+  font-family: 'Noto Sans';
+}
+
+.screenImg .st1 {
+  fill: none;
+  stroke: #000000;
+  stroke-width: 4;
+}
+
+.screenImg .st2 {
+  fill: #003300;
+}
+
+.screenImg .st3 {
+  font-size: 16px;
+}
+
+.screenImg .st4 {
+  fill: var(--background-color);
+}
+
+.screenImg .st5 {
+  font-size: 20px;
+}
 </style>
 <g id="theater">
 	<rect x="108" y="133" width="10" height="71"></rect>
@@ -74,7 +123,7 @@
 		<path d="M430.813,124.86V138h-1.26l-5.4-11.25h-0.045V138h-1.17v-13.14h1.305l5.4,11.25h0.045v-11.25H430.813z"></path>
 </g>
 <g id="seatmap">
-	<g id="I-1">
+	<g id="I-1" class="maintain">
 		<polygon class="st4" points="537,178 546.818,178 546.818,185.409 563.182,185.409 563.182,178 573,178 573,214 537,214 		"></polygon>
 		<text transform="matrix(1 0 0 1 549.1865 207)" class="st2 st0 st5">1</text>
 	</g>
