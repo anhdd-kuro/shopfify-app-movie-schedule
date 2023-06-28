@@ -1,6 +1,8 @@
 import { BrowserRouter } from 'react-router-dom'
 import { NavigationMenu } from '@shopify/app-bridge-react'
 import Routes from './Routes'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 import { AppBridgeProvider, QueryProvider, PolarisProvider } from './components'
 
@@ -18,10 +20,6 @@ export default function App() {
           <QueryProvider>
             <NavigationMenu
               navigationLinks={[
-                // {
-                //   label: 'Page name',
-                //   destination: '/pagename',
-                // },
                 {
                   label: 'Schedule',
                   destination: '/schedule',
@@ -33,6 +31,7 @@ export default function App() {
               ]}
             />
             <Routes pages={pages} />
+            <ToastContainer autoClose={1000} />
           </QueryProvider>
         </AppBridgeProvider>
       </BrowserRouter>

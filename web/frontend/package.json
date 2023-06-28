@@ -25,6 +25,7 @@
     "clsx": "^1.2.1",
     "i18next": "^23.2.3",
     "i18next-resources-to-backend": "^1.1.4",
+    "moment-timezone": "^0.5.43",
     "react": "^18.2.0",
     "react-big-calendar": "^1.8.1",
     "react-dom": "^18.2.0",
@@ -35,6 +36,7 @@
     "vite": "^4.3.9"
   },
   "devDependencies": {
+    "@shopify/shopify-api": "^7.4.0",
     "@types/lodash": "^4.14.195",
     "@types/node": "^20.3.1",
     "@types/react-big-calendar": "^1.6.4",

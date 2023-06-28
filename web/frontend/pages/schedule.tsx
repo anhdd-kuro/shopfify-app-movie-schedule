@@ -1,5 +1,5 @@
 import { Calendar, Event, momentLocalizer } from 'react-big-calendar'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import withDragAndDrop, {
   EventInteractionArgs,
 } from 'react-big-calendar/lib/addons/dragAndDrop'
@@ -11,6 +11,9 @@ import { Modal, Tabs, Text } from '@shopify/polaris'
 import Screen from '../components/Screen'
 import Playlist from '../components/Playlist'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
+import { toast } from 'react-toastify'
+
+moment.tz.setDefault('Asia/Tokyo')
 
 const DnDCalendar = withDragAndDrop(Calendar)
 
@@ -120,10 +123,15 @@ export default function MovieCalendar() {
       if (screen.id === currentScreen) {
         const updatedSchedule = screen.schedule.map((movie) => {
           if (movie.title === selectedEvent.title) {
+            const newStart = new Date(data['start-time'] as string)
+            newStart.setUTCHours(newStart.getUTCHours() + 9)
+            const newEnd = new Date(data['end-time'] as string)
+            newEnd.setUTCHours(newEnd.getUTCHours() + 9)
+
             return {
               ...movie,
-              start: new Date(data['start-time'] as string),
-              end: new Date(data['end-time'] as string),
+              start: newStart,
+              end: newEnd,
             }
           }
           return movie
@@ -135,8 +143,12 @@ export default function MovieCalendar() {
       }
       return screen
     })
+    toast.success('Schedule updated successfully')
+    console.log(updatedScreenSchedule)
     setScreens(updatedScreenSchedule)
   }
+
+  console.log('updated', screens)
 
   return (
     <div className="flex h-full">

@@ -30,10 +30,41 @@ app.post(
 );
 
 app.use("/api/*", shopify.validateAuthenticatedSession());
-app.use("/api", apiCollectionsRouter);
 
 app.use(express.json());
 
+app.get("/api/products/count", async (_req, res) => {
+  try {
+    const countData = await shopify.api.rest.Product.count({
+      session: res.locals.shopify.session,
+    });
+
+    res.status(200).send(countData);
+    // console.log(collections)
+  } catch (error) {
+    res.status(500).send(error)
+  }
+});
+
+app.get("/api/collections", async (req, res) => {
+  try {
+    // Get all collections with include images and metafields
+    const collections = await shopify.api.rest.SmartCollection.all({
+      session: res.locals.shopify.session,
+      // fields: ['id', 'title', 'image', 'metafields']
+    });
+
+    // const collections = await shopify.api.rest.SmartCollection.all({
+    //   session: res.locals.shopify.session,
+    // }).then((smartCollections) => {
+
+    // };
+    res.status(200).send(collections.data);
+
+  } catch (error) {
+    res.status(500).send(error)
+  }
+});
 
 app.use(serveStatic(STATIC_PATH, { index: false }));
 

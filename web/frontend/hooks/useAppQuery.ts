@@ -1,11 +1,11 @@
 import { useAuthenticatedFetch } from './useAuthenticatedFetch'
 import { useMemo } from 'react'
-import { useQuery, UseQueryResult } from 'react-query'
+import { UseQueryOptions, useQuery, UseQueryResult } from 'react-query'
 
-type AppQueryOptions = {
+type AppQueryOptions<TData> = {
   url: string
   fetchInit?: RequestInit
-  reactQueryOptions?: Parameters<typeof useQuery>[1]
+  reactQueryOptions?: UseQueryOptions<TData>
 }
 
 type AppQueryResult<TData> = UseQueryResult<TData, unknown>
@@ -26,7 +26,7 @@ export const useAppQuery = <TData>({
   url,
   fetchInit = {},
   reactQueryOptions,
-}: AppQueryOptions): AppQueryResult<TData> => {
+}: AppQueryOptions<TData>): AppQueryResult<TData> => {
   const authenticatedFetch = useAuthenticatedFetch()
   const fetch = useMemo(() => {
     return async () => {
