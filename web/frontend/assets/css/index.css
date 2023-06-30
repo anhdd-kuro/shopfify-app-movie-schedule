@@ -7,3 +7,36 @@
     @apply flex justify-center items-center;
   }
 }
+
+.rbc-toolbar .rbc-btn-group > button{
+  font-size: 0px;
+  line-height: 1;
+}
+.rbc-btn-group:nth-child(1) > button:nth-child(1)::before{
+  font-size: 14px;
+  content: '今日';
+}
+.rbc-btn-group:nth-child(1) > button:nth-child(2)::before{
+  font-size: 14px;
+  content: '←';
+}
+.rbc-btn-group:nth-child(1) > button:nth-child(3)::before{
+  font-size: 14px;
+  content: '→';
+}
+.rbc-btn-group:nth-child(3) > button:nth-child(1)::before{
+  font-size: 14px;
+  content: '月';
+}
+.rbc-btn-group:nth-child(3) > button:nth-child(2)::before{
+  font-size: 14px;
+  content: '週';
+}
+.rbc-btn-group:nth-child(3) > button:nth-child(3)::before{
+  font-size: 14px;
+  content: '日';
+}
+.rbc-btn-group:nth-child(3) > button:nth-child(4)::before{
+  font-size: 14px;
+  content: 'テーブル';
+}

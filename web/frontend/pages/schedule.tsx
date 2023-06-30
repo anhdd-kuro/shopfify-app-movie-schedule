@@ -1,5 +1,11 @@
-import { Calendar, Event, SlotInfo, momentLocalizer } from 'react-big-calendar'
-import moment from 'moment-timezone'
+import {
+  Calendar,
+  Event,
+  Formats,
+  SlotInfo,
+  momentLocalizer,
+} from 'react-big-calendar'
+import 'moment/locale/ja'
 import withDragAndDrop, {
   EventInteractionArgs,
 } from 'react-big-calendar/lib/addons/dragAndDrop'
@@ -14,13 +20,37 @@ import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { toast } from 'react-toastify'
 import { Movie, initialData } from './schedule.data'
 import Select from 'react-select'
-import { nanoid } from 'nanoid'
-
-moment.tz.setDefault('Asia/Tokyo')
-
-const DnDCalendar = withDragAndDrop(Calendar)
+import moment from 'moment-timezone'
 
 const localizer = momentLocalizer(moment)
+
+const formats: Formats = {
+  agendaDateFormat: 'M月D日',
+  agendaHeaderFormat: ({ start, end }, culture, local) =>
+    `${local.format(start, 'YYYY年M月D日', culture)} - ${local.format(
+      end,
+      'YYYY年M月D日',
+      culture
+    )}`,
+  agendaTimeRangeFormat: ({ start, end }, culture, local) =>
+    `${local.format(start, 'HH:mm', culture)} - ${local.format(
+      end,
+      'HH:mm',
+      culture
+    )}`,
+  dateFormat: 'D',
+  dayFormat: 'D(ddd)',
+  monthHeaderFormat: 'YYYY年M月',
+  dayHeaderFormat: 'M月D日(ddd)',
+  dayRangeHeaderFormat: ({ start, end }, culture, local) =>
+    `${local.format(start, 'M月D日', culture)} - ${local.format(
+      end,
+      'M月D日',
+      culture
+    )}`,
+}
+
+const DnDCalendar = withDragAndDrop(Calendar)
 
 type Screen = {
   id: number
@@ -224,7 +254,9 @@ export default function MovieCalendar() {
         </div>
         <div className="h-screen min-h-[600px] p-4 overflow-auto">
           <DnDCalendar
+            culture={moment.locale('ja')}
             localizer={localizer}
+            formats={formats}
             events={allEventsInScreens}
             draggableAccessor={() => true}
             onEventDrop={handleEventDrop}

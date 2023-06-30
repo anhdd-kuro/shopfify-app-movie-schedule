@@ -23,6 +23,8 @@
     "@types/react-router-dom": "^5.3.3",
     "@vitejs/plugin-react": "^4.0.1",
     "clsx": "^1.2.1",
+    "date-fns": "^2.30.0",
+    "globalize": "^1.7.0",
     "i18next": "^23.2.3",
     "i18next-resources-to-backend": "^1.1.4",
     "moment-timezone": "^0.5.43",

@@ -1,5 +1,5 @@
-import { Event } from 'react-big-calendar'
 import moment from 'moment-timezone'
+import { Event } from 'react-big-calendar'
 
 export type AdditionalData = {
   id: number
