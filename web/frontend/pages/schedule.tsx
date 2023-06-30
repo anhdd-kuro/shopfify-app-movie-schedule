@@ -32,10 +32,10 @@ const colors = [
   '#FFC300',
   '#3D9970',
   '#FF5733',
-  '#72c5e6',
-  '#900C3F',
-  '#581845',
   '#0074D9',
+  '#900C3F',
+  '#72c5e6',
+  '#581845',
   '#C70039',
 ]
 
@@ -44,6 +44,11 @@ export default function MovieCalendar() {
   const [tabContentWrapper] = useAutoAnimate()
 
   const initialScreens = useRef<Screen[]>([
+    {
+      id: -1,
+      name: 'シネマ未設定',
+      schedule: [],
+    },
     {
       id: 1,
       name: 'シネマ 1',
@@ -87,6 +92,7 @@ export default function MovieCalendar() {
     handleEventResize,
     setSelectedEvent,
     handleSelectSlot,
+    deleteSelectedEvent,
   } = useDndCalendarEvents(initialScreens.current)
 
   const screensOptions = useMemo(
@@ -98,14 +104,21 @@ export default function MovieCalendar() {
     [initialScreens]
   )
 
-  const setColor = (screenId: number) =>
-    screenId === 1
-      ? colors[0]
-      : screenId === 2
-      ? colors[1]
-      : screenId === 3
-      ? colors[2]
-      : colors[3]
+  const setColor = (screenId: number) => {
+    if (screenId === 1) return colors[0]
+
+    if (screenId === 2) return colors[1]
+
+    if (screenId === 3) return colors[2]
+
+    if (screenId === 4) return colors[3]
+
+    if (screenId === 5) return colors[4]
+
+    if (screenId === 6) return colors[5]
+
+    return 'gray'
+  }
 
   const [selectedTab, setSelectedTab] = useState(0)
 
@@ -140,7 +153,7 @@ export default function MovieCalendar() {
 
             updatedEvent = {
               ...movie,
-              title: movieById?.title || '',
+              title: movieById?.title || '未設定',
               resource: {
                 ...movie.resource,
                 screenId: screen,
@@ -241,6 +254,7 @@ export default function MovieCalendar() {
             onEventResize={handleEventResize}
             doShowMoreDrillDown={true}
             onSelectSlot={handleSelectSlot}
+            selectable
             // components={components}
           />
         </div>
@@ -251,14 +265,19 @@ export default function MovieCalendar() {
           open={!!selectedEvent}
           title={
             <div className="flex items-center gap-4">
-              {
-                initialScreens.current.find(
-                  (screen) => screen.id === selectedEvent.resource.screenId
-                )?.name
-              }{' '}
-              - {selectedEvent.title}
+              {initialScreens.current.find(
+                (screen) => screen.id === selectedEvent.resource.screenId
+              )?.name || 'スクリーン未設定'}{' '}
+              - {selectedEvent.title || '作品未設定'}
               <button className="p-10 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm">
                 商品として登録
+              </button>
+              {/* Delete button */}
+              <button
+                className="p-10 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded text-sm"
+                onClick={deleteSelectedEvent}
+              >
+                削除
               </button>
             </div>
           }
@@ -294,6 +313,13 @@ export default function MovieCalendar() {
                             name="movieId"
                             className="border border-gray-400 p-2 rounded-md w-1/3"
                           >
+                            <option
+                              value={-1}
+                              disabled
+                              selected={selectedEvent.resource.id === -1}
+                            >
+                              未設定
+                            </option>
                             {initialData.map((movie) => (
                               <option
                                 key={movie.resource.id}
@@ -493,21 +519,53 @@ const useDndCalendarEvents = (initialScreens: Screen[]) => {
     []
   )
 
-  const handleSelectSlot = useCallback(
-    (slotInfo: SlotInfo) => {
-      // setSelectedEvent({
-      //   start: slotInfo.start,
-      //   end: slotInfo.end,
-      //   resource: {
-      //     screenId: +slotInfo.resourceId,
-      //     id: +nanoid(),
-      //     isActive: false,
-      //     isProduct: false,
-      //   },
-      // })
-    },
-    [setSelectedEvent]
-  )
+  const handleSelectSlot = useCallback((slotInfo: SlotInfo) => {
+    const newShow = {
+      title: '未設定',
+      start: slotInfo.start,
+      end: slotInfo.end,
+      resource: {
+        id: -1,
+        screenId: -1,
+        isActive: false,
+        isProduct: false,
+      },
+    }
+
+    setCurrentScreens((cur) => {
+      const updatedScreen = cur.map((screen) => {
+        if (screen.id === -1) {
+          return {
+            ...screen,
+            schedule: [...screen.schedule, newShow],
+          }
+        }
+        return screen
+      })
+      return updatedScreen
+    })
+
+    setSelectedEvent(newShow)
+  }, [])
+
+  const deleteSelectedEvent = useCallback(() => {
+    setCurrentScreens((cur) => {
+      const updatedScreen = cur.map((screen) => {
+        const updatedSchedule = screen.schedule.filter(
+          (movie) => movie.resource.id !== selectedEvent.resource.id
+        )
+        return {
+          ...screen,
+          schedule: updatedSchedule,
+        }
+      })
+      return updatedScreen
+    })
+
+    setSelectedEvent(null)
+
+    toast.success('削除しました')
+  }, [selectedEvent])
 
   return {
     handleEventDrop,
@@ -519,5 +577,6 @@ const useDndCalendarEvents = (initialScreens: Screen[]) => {
     currentScreens,
     setCurrentScreens,
     handleSelectSlot,
+    deleteSelectedEvent,
   }
 }
