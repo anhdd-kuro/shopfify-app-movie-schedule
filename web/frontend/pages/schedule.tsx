@@ -296,21 +296,49 @@ export default function MovieCalendar() {
         <Modal
           open={!!selectedEvent}
           title={
-            <div className="flex items-center gap-4">
-              {initialScreens.current.find(
-                (screen) => screen.id === selectedEvent.resource.screenId
-              )?.name || 'スクリーン未設定'}{' '}
-              - {selectedEvent.title || '作品未設定'}
-              <button className="p-10 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm">
-                商品として登録
-              </button>
-              {/* Delete button */}
-              <button
-                className="p-10 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded text-sm"
-                onClick={deleteSelectedEvent}
-              >
-                削除
-              </button>
+            <div>
+              <h2 className="flex items-center font-bold text-xl gap-2">
+                {/* Status label */}
+                <span
+                  className={clsx(
+                    'px-2 py-1 rounded text-xs font-bold text-white'
+                  )}
+                  style={{
+                    backgroundColor: selectedEvent.resource.isActive
+                      ? setColor(selectedEvent.resource.screenId)
+                      : 'gray',
+                  }}
+                >
+                  {selectedEvent.resource.isActive ? '公開中' : '非公開'}
+                </span>
+                {!selectedEvent.resource.isProduct && (
+                  <span
+                    className={clsx(
+                      'px-2 py-1 rounded text-xs font-bold bg-gray-500 text-white'
+                    )}
+                  >
+                    販売未設定
+                  </span>
+                )}
+                <span>
+                  {initialScreens.current.find(
+                    (screen) => screen.id === selectedEvent.resource.screenId
+                  )?.name || 'スクリーン未設定'}{' '}
+                  - {selectedEvent.title || '作品未設定'}
+                </span>
+              </h2>
+              <div className="flex items-center gap-4 mt-4">
+                <button className="p-10 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm">
+                  商品として登録
+                </button>
+                {/* Delete button */}
+                <button
+                  className="p-10 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded text-sm"
+                  onClick={deleteSelectedEvent}
+                >
+                  削除
+                </button>
+              </div>
             </div>
           }
           onClose={() => {
