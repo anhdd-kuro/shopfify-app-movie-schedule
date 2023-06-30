@@ -1,9 +1,4 @@
-import {
-  Calendar,
-  Components,
-  Event,
-  momentLocalizer,
-} from 'react-big-calendar'
+import { Calendar, Event, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment-timezone'
 import withDragAndDrop, {
   EventInteractionArgs,
@@ -32,45 +27,6 @@ type Screen = {
   schedule: Movie[]
 }
 
-// const components: Components<Movie> = {
-//   // event: ({ event }) => {
-//   //   return (
-//   //     <div className="w-full h-full flex items-center justify-center bg-green-700 text-white rounded-md">
-//   //       {event.title}
-//   //     </div>
-//   //   )
-//   // },
-//   eventContainerWrapper: () => {
-//     return (
-//       <div>
-//         <p>bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb</p>
-//       </div>
-//     )
-//   },
-//   eventWrapper: ({
-//     event,
-//     style,
-//     getters,
-//     className,
-//     selected,
-//     children,
-//     onClick,
-//   }) => {
-//     return (
-//       <div className={className} style={style}>
-//         <div
-//           className="px-4 py-1 flex items-center justify-center bg-green-700 text-white rounded-md"
-//           onClick={onClick}
-//         >
-//           {event.title}
-//         </div>
-//         {children}
-//       </div>
-//     )
-//   },
-// }
-
-// Top 10 trending colors from https://www.w3schools.com/colors/colors_trends.asp
 const colors = [
   '#FFC300',
   '#3D9970',
