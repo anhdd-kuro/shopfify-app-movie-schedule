@@ -330,7 +330,12 @@ export default function MovieCalendar() {
           open={!!selectedEvent}
           title={
             <div className="flex items-center gap-4">
-              {selectedEvent.title}
+              {
+                initialScreens.current.find(
+                  (screen) => screen.id === selectedEvent.resource.screenId
+                )?.name
+              }{' '}
+              - {selectedEvent.title}
               <button className="p-10 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm">
                 商品として登録
               </button>
