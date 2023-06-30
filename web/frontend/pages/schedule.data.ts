@@ -147,12 +147,12 @@ export const initialData: Movie[] = [
     },
     title: 'The Lord of the Rings: The Return of the King',
     start: makeDateTime('past', {
-      amount: 6,
+      amount: 1,
       unit: 'days',
       hour: 18,
       minute: 0,
     }),
-    end: makeDateTime('past', { amount: 6, unit: 'days', hour: 20, minute: 0 }),
+    end: makeDateTime('past', { amount: 1, unit: 'days', hour: 20, minute: 0 }),
   },
   {
     resource: {
@@ -163,12 +163,12 @@ export const initialData: Movie[] = [
     },
     title: 'Pulp Fiction',
     start: makeDateTime('past', {
-      amount: 7,
+      amount: 2,
       unit: 'days',
       hour: 10,
       minute: 0,
     }),
-    end: makeDateTime('past', { amount: 7, unit: 'days', hour: 12, minute: 0 }),
+    end: makeDateTime('past', { amount: 2, unit: 'days', hour: 12, minute: 0 }),
   },
   {
     resource: {
@@ -179,12 +179,12 @@ export const initialData: Movie[] = [
     },
     title: 'The Lord of the Rings: The Fellowship of the Ring',
     start: makeDateTime('past', {
-      amount: 8,
+      amount: 4,
       unit: 'days',
       hour: 14,
       minute: 0,
     }),
-    end: makeDateTime('past', { amount: 8, unit: 'days', hour: 16, minute: 0 }),
+    end: makeDateTime('past', { amount: 4, unit: 'days', hour: 16, minute: 0 }),
   },
   {
     resource: {
@@ -195,12 +195,12 @@ export const initialData: Movie[] = [
     },
     title: 'Forrest Gump',
     start: makeDateTime('past', {
-      amount: 9,
+      amount: 3,
       unit: 'days',
       hour: 18,
       minute: 0,
     }),
-    end: makeDateTime('past', { amount: 9, unit: 'days', hour: 20, minute: 0 }),
+    end: makeDateTime('past', { amount: 3, unit: 'days', hour: 20, minute: 0 }),
   },
   {
     resource: {
@@ -211,13 +211,13 @@ export const initialData: Movie[] = [
     },
     title: 'Inception',
     start: makeDateTime('past', {
-      amount: 10,
+      amount: 2,
       unit: 'days',
       hour: 10,
       minute: 0,
     }),
     end: makeDateTime('past', {
-      amount: 10,
+      amount: 2,
       unit: 'days',
       hour: 12,
       minute: 0,
