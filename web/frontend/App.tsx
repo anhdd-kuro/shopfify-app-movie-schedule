@@ -23,8 +23,12 @@ export default function App() {
               <NavigationMenu
                 navigationLinks={[
                   {
-                    label: 'Schedule',
+                    label: 'スケージュール',
                     destination: '/schedule',
+                  },
+                  {
+                    label: '座席図',
+                    destination: '/seats',
                   },
                   {
                     label: 'Show Detail',

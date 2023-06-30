@@ -1,18 +1,24 @@
-import { Calendar, Event, momentLocalizer } from 'react-big-calendar'
+import {
+  Calendar,
+  Components,
+  Event,
+  momentLocalizer,
+} from 'react-big-calendar'
 import moment from 'moment-timezone'
 import withDragAndDrop, {
   EventInteractionArgs,
 } from 'react-big-calendar/lib/addons/dragAndDrop'
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.css'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 import clsx from 'clsx'
-import { Modal, Tabs } from '@shopify/polaris'
+import { Checkbox, Modal, Tabs } from '@shopify/polaris'
 import Screen from '../components/Screen'
 import Playlist from '../components/Playlist'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { toast } from 'react-toastify'
 import { Movie, initialData } from './schedule.data'
+import Select from 'react-select'
 
 moment.tz.setDefault('Asia/Tokyo')
 
@@ -26,24 +32,122 @@ type Screen = {
   schedule: Movie[]
 }
 
+// const components: Components<Movie> = {
+//   // event: ({ event }) => {
+//   //   return (
+//   //     <div className="w-full h-full flex items-center justify-center bg-green-700 text-white rounded-md">
+//   //       {event.title}
+//   //     </div>
+//   //   )
+//   // },
+//   eventContainerWrapper: () => {
+//     return (
+//       <div>
+//         <p>bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb</p>
+//       </div>
+//     )
+//   },
+//   eventWrapper: ({
+//     event,
+//     style,
+//     getters,
+//     className,
+//     selected,
+//     children,
+//     onClick,
+//   }) => {
+//     return (
+//       <div className={className} style={style}>
+//         <div
+//           className="px-4 py-1 flex items-center justify-center bg-green-700 text-white rounded-md"
+//           onClick={onClick}
+//         >
+//           {event.title}
+//         </div>
+//         {children}
+//       </div>
+//     )
+//   },
+// }
+
+// Top 10 trending colors from https://www.w3schools.com/colors/colors_trends.asp
+const colors = [
+  '#FFC300',
+  '#3D9970',
+  '#FF5733',
+  '#72c5e6',
+  '#900C3F',
+  '#581845',
+  '#0074D9',
+  '#C70039',
+]
+
 export default function MovieCalendar() {
   const calendarWrapper = useRef<HTMLDivElement>(null)
   const [tabContentWrapper] = useAutoAnimate()
 
-  const [screens, setScreens] = useState<Screen[]>([
+  const initialScreens = useRef<Screen[]>([
     {
       id: 1,
-      name: 'Screen 1',
-      schedule: initialData,
+      name: 'シネマ 1',
+      schedule: initialData
+        .slice(0, 3)
+        .map((e) => ({ ...e, resource: { ...e.resource, screenId: 1 } })),
     },
     {
       id: 2,
-      name: 'Screen 2',
-      schedule: [],
+      name: 'シネマ 2',
+      schedule: initialData.slice(4, 7).map((e) => ({
+        ...e,
+        resource: { ...e.resource, screenId: 2 },
+      })),
+    },
+    {
+      id: 3,
+      name: 'シネマ 3',
+      schedule: initialData.slice(7, 9).map((e) => ({
+        ...e,
+        resource: { ...e.resource, screenId: 3 },
+      })),
+    },
+    {
+      id: 4,
+      name: 'シネマ 4',
+      schedule: initialData.slice(4, 9).map((e) => ({
+        ...e,
+        resource: { ...e.resource, screenId: 4 },
+      })),
     },
   ])
 
-  const [currentScreen, setCurrentScreen] = useState(1)
+  const screensOptions = useMemo(
+    () =>
+      initialScreens.current.map((screen) => ({
+        label: screen.name,
+        value: screen.id,
+      })),
+    [initialScreens]
+  )
+
+  const [currentScreens, setCurrentScreens] = useState(initialScreens.current)
+
+  const allEventsInScreens = useMemo(
+    () =>
+      currentScreens.reduce((acc, screen) => {
+        return [...acc, ...screen.schedule]
+      }, []),
+    [currentScreens]
+  )
+
+  const setColor = (screenId: number) =>
+    screenId === 1
+      ? colors[0]
+      : screenId === 2
+      ? colors[1]
+      : screenId === 3
+      ? colors[2]
+      : colors[3]
+
   const [selectedEvent, setSelectedEvent] = useState<Movie>(null)
 
   const [selected, setSelected] = useState(0)
@@ -53,30 +157,32 @@ export default function MovieCalendar() {
     []
   )
 
-  const handleEventDrop =
-    (screenId: number) =>
-    ({ event, start, end }: EventInteractionArgs<Movie>) => {
-      const updatedScreenSchedule = screens.map((screen) => {
-        if (screen.id === screenId) {
-          const updatedSchedule = screen.schedule.map((movie) => {
-            if (movie.title === event.title) {
-              return {
-                ...movie,
-                start: new Date(start),
-                end: new Date(end),
-              }
-            }
-            return movie
-          })
+  const handleEventDrop = ({
+    event,
+    start,
+    end,
+  }: EventInteractionArgs<Movie>) => {
+    const updatedScreenSchedule = currentScreens.map((screen) => {
+      const updatedSchedule = screen.schedule.map((movie) => {
+        if (
+          movie.resource.id === event.resource.id &&
+          movie.resource.screenId === event.resource.screenId
+        ) {
           return {
-            ...screen,
-            schedule: updatedSchedule,
+            ...movie,
+            start: new Date(start),
+            end: new Date(end),
           }
         }
-        return screen
+        return movie
       })
-      setScreens(updatedScreenSchedule)
-    }
+      return {
+        ...screen,
+        schedule: updatedSchedule,
+      }
+    })
+    setCurrentScreens(updatedScreenSchedule)
+  }
 
   const handleEventClick = useCallback((calEvent: Event & Movie) => {
     setSelectedEvent({
@@ -84,30 +190,32 @@ export default function MovieCalendar() {
     })
   }, [])
 
-  const handleEventResize =
-    (screenId: number) =>
-    ({ event, start, end }: EventInteractionArgs<Movie>) => {
-      const updatedScreenSchedule = screens.map((screen) => {
-        if (screen.id === screenId) {
-          const updatedSchedule = screen.schedule.map((movie) => {
-            if (movie.title === event.title) {
-              return {
-                ...movie,
-                start: new Date(start),
-                end: new Date(end),
-              }
-            }
-            return movie
-          })
+  const handleEventResize = ({
+    event,
+    start,
+    end,
+  }: EventInteractionArgs<Movie>) => {
+    const updatedScreenSchedule = currentScreens.map((screen) => {
+      const updatedSchedule = screen.schedule.map((movie) => {
+        if (
+          movie.resource.id === event.resource.id &&
+          movie.resource.screenId === event.resource.screenId
+        ) {
           return {
-            ...screen,
-            schedule: updatedSchedule,
+            ...movie,
+            start: new Date(start),
+            end: new Date(end),
           }
         }
-        return screen
+        return movie
       })
-      setScreens(updatedScreenSchedule)
-    }
+      return {
+        ...screen,
+        schedule: updatedSchedule,
+      }
+    })
+    setCurrentScreens(updatedScreenSchedule)
+  }
 
   const handleScheduleFormSubmit = (
     event: React.FormEvent<HTMLFormElement>
@@ -116,8 +224,8 @@ export default function MovieCalendar() {
     const formData = new FormData(event.currentTarget)
     const data = Object.fromEntries(formData.entries())
 
-    const updatedScreenSchedule = screens.map((screen) => {
-      if (screen.id === currentScreen) {
+    const updatedScreenSchedule = currentScreens.map((screen) => {
+      if (screen.id === selectedEvent.resource.screenId) {
         const updatedSchedule = screen.schedule.map((movie) => {
           if (movie.title === selectedEvent.title) {
             const newStart = new Date(data['start-time'] as string)
@@ -142,63 +250,98 @@ export default function MovieCalendar() {
     })
     toast.success('Schedule updated successfully')
     console.log(updatedScreenSchedule)
-    setScreens(updatedScreenSchedule)
+    setCurrentScreens(updatedScreenSchedule)
   }
 
-  console.log('updated', screens)
-
   return (
-    <div className="flex h-full">
-      <div className="w-[10%] bg-gray-200 p-4 min-w-[120px]">
-        {/* Apply padding using Tailwind CSS classes */}
-        <h3 className="mb-4 text-xl font-bold">Screens</h3>
-        <ul className="list-none p-0">
-          {screens.map((screen) => (
-            <li
-              key={screen.id}
-              className={clsx(
-                'mb-2 cursor-pointer',
-                currentScreen === screen.id && 'font-bold text-green-700'
-              )}
-              onClick={() => setCurrentScreen(screen.id)}
-            >
-              {screen.name}
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div ref={calendarWrapper} className="flex-1">
-        <div className="h-screen min-h-[600px] p-4 overflow-auto">
-          <h3 className="text-xl font-bold mb-4">
-            {screens[currentScreen - 1].name}
-          </h3>
-          <DnDCalendar
-            localizer={localizer}
-            events={screens[currentScreen - 1].schedule}
-            draggableAccessor={() => true}
-            onEventDrop={handleEventDrop(screens[currentScreen - 1].id)}
-            eventPropGetter={() => ({
-              style: {
-                cursor: 'grab',
-              },
-            })}
-            onSelectEvent={handleEventClick}
-            onEventResize={handleEventResize(screens[currentScreen - 1].id)}
+    <div className="h-full py-2">
+      <div ref={calendarWrapper} className="space-y-6">
+        <h3 className="text-center text-xl font-bold">上映カーレンダー</h3>
+        <div className="sticky top-0 z-50">
+          <Select
+            closeMenuOnSelect={false}
+            components={{}}
+            styles={{
+              multiValueLabel: (base, { data }) => ({
+                ...base,
+                backgroundColor: setColor(data.value),
+                color: '#fff',
+                fontWeight: 'bold',
+                borderTopRightRadius: 0,
+                borderBottomRightRadius: 0,
+              }),
+              multiValueRemove: (base, { data }) => ({
+                ...base,
+                backgroundColor: setColor(data.value),
+                color: '#fff',
+                borderTopLeftRadius: 0,
+                borderBottomLeftRadius: 0,
+                // borderLeft: '1px solid #fff',
+                ':hover': {
+                  opacity: 0.8,
+                },
+              }),
+            }}
+            isMulti
+            defaultValue={screensOptions}
+            options={screensOptions}
+            onChange={(selectedScreens) => {
+              const selectedScreenIds = selectedScreens.map(
+                (screen) => screen.value
+              )
+              const selectedScreensData = initialScreens.current.filter(
+                (screen) => selectedScreenIds.includes(screen.id)
+              )
+              setCurrentScreens(selectedScreensData)
+            }}
           />
         </div>
-
-        {selectedEvent && (
-          <Modal
-            open={!!selectedEvent}
-            title={selectedEvent.title}
-            onClose={() => {
-              setSelectedEvent(null)
+        <div className="h-screen min-h-[600px] p-4 overflow-auto">
+          <DnDCalendar
+            localizer={localizer}
+            events={allEventsInScreens}
+            draggableAccessor={() => true}
+            onEventDrop={handleEventDrop}
+            eventPropGetter={(event: Movie, start, end, isSelected) => {
+              return {
+                className: clsx('cursor-grab'),
+                style: {
+                  backgroundColor:
+                    event.resource.isActive &&
+                    setColor(event.resource.screenId),
+                  color:
+                    !event.resource.isActive &&
+                    setColor(event.resource.screenId),
+                },
+              }
             }}
-            large
-          >
-            <Modal.Section>
+            onSelectEvent={handleEventClick}
+            onEventResize={handleEventResize}
+            // components={components}
+          />
+        </div>
+      </div>
+
+      {selectedEvent && (
+        <Modal
+          open={!!selectedEvent}
+          title={
+            <div className="flex items-center gap-4">
+              {selectedEvent.title}
+              <button className="p-10 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm">
+                商品として登録
+              </button>
+            </div>
+          }
+          onClose={() => {
+            setSelectedEvent(null)
+          }}
+          large
+        >
+          <Modal.Section>
+            <div className="flex flex-col justify-between h-[66vh]">
               <Tabs tabs={tabs} selected={selected} onSelect={handleTabChange}>
-                <div ref={tabContentWrapper} className="p-4 h-[80vh]">
+                <div ref={tabContentWrapper} className="p-4 h-[80%]">
                   {tabs[selected].id === 'seats' && (
                     <>
                       <Screen />
@@ -258,12 +401,23 @@ export default function MovieCalendar() {
                       />
                     </div>
                   )}
+                  {tabs[selected].id === 'types' && (
+                    <div>
+                      <h3 className="font-bold">販売可能なチケット種別</h3>
+                      <div className="flex gap-8 mt-4">
+                        <Checkbox label="一般" checked />
+                        <Checkbox label="小学生" checked />
+                        <Checkbox label="学生" checked />
+                        <Checkbox label="シニア" checked />
+                      </div>
+                    </div>
+                  )}
                 </div>
               </Tabs>
-            </Modal.Section>
-          </Modal>
-        )}
-      </div>
+            </div>
+          </Modal.Section>
+        </Modal>
+      )}
     </div>
   )
 }
@@ -271,17 +425,22 @@ export default function MovieCalendar() {
 const tabs = [
   {
     id: 'schedule',
-    content: 'Schedule',
+    content: 'スケジュール',
     panelID: 'schedule',
   },
   {
     id: 'playlist',
-    content: 'Playlist',
+    content: 'プレイリスト',
     panelID: 'Playlist',
   },
   {
     id: 'seats',
-    content: 'Seats',
+    content: '座席表',
     panelID: 'Seats',
+  },
+  {
+    id: 'types',
+    content: 'チケット種別',
+    panelID: 'Types',
   },
 ]
