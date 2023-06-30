@@ -338,6 +338,15 @@ export default function MovieCalendar() {
                 >
                   削除
                 </button>
+                {/* Cancel Button */}
+                <button
+                  className="p-10 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded text-sm"
+                  onClick={() => {
+                    setSelectedEvent(null)
+                  }}
+                >
+                  販売キャンセル
+                </button>
               </div>
             </div>
           }
