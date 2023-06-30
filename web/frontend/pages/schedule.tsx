@@ -120,6 +120,17 @@ export default function MovieCalendar() {
     },
   ])
 
+  const {
+    currentScreens,
+    setCurrentScreens,
+    selectedEvent,
+    allEventsInScreens,
+    handleEventClick,
+    handleEventDrop,
+    handleEventResize,
+    setSelectedEvent,
+  } = useDndCalendarEvents(initialScreens.current)
+
   const screensOptions = useMemo(
     () =>
       initialScreens.current.map((screen) => ({
@@ -127,16 +138,6 @@ export default function MovieCalendar() {
         value: screen.id,
       })),
     [initialScreens]
-  )
-
-  const [currentScreens, setCurrentScreens] = useState(initialScreens.current)
-
-  const allEventsInScreens = useMemo(
-    () =>
-      currentScreens.reduce((acc, screen) => {
-        return [...acc, ...screen.schedule]
-      }, []),
-    [currentScreens]
   )
 
   const setColor = (screenId: number) =>
@@ -148,74 +149,12 @@ export default function MovieCalendar() {
       ? colors[2]
       : colors[3]
 
-  const [selectedEvent, setSelectedEvent] = useState<Movie>(null)
-
-  const [selected, setSelected] = useState(0)
+  const [selectedTab, setSelectedTab] = useState(0)
 
   const handleTabChange = useCallback(
-    (selectedTabIndex: number) => setSelected(selectedTabIndex),
+    (selectedTabIndex: number) => setSelectedTab(selectedTabIndex),
     []
   )
-
-  const handleEventDrop = ({
-    event,
-    start,
-    end,
-  }: EventInteractionArgs<Movie>) => {
-    const updatedScreenSchedule = currentScreens.map((screen) => {
-      const updatedSchedule = screen.schedule.map((movie) => {
-        if (
-          movie.resource.id === event.resource.id &&
-          movie.resource.screenId === event.resource.screenId
-        ) {
-          return {
-            ...movie,
-            start: new Date(start),
-            end: new Date(end),
-          }
-        }
-        return movie
-      })
-      return {
-        ...screen,
-        schedule: updatedSchedule,
-      }
-    })
-    setCurrentScreens(updatedScreenSchedule)
-  }
-
-  const handleEventClick = useCallback((calEvent: Event & Movie) => {
-    setSelectedEvent({
-      ...calEvent,
-    })
-  }, [])
-
-  const handleEventResize = ({
-    event,
-    start,
-    end,
-  }: EventInteractionArgs<Movie>) => {
-    const updatedScreenSchedule = currentScreens.map((screen) => {
-      const updatedSchedule = screen.schedule.map((movie) => {
-        if (
-          movie.resource.id === event.resource.id &&
-          movie.resource.screenId === event.resource.screenId
-        ) {
-          return {
-            ...movie,
-            start: new Date(start),
-            end: new Date(end),
-          }
-        }
-        return movie
-      })
-      return {
-        ...screen,
-        schedule: updatedSchedule,
-      }
-    })
-    setCurrentScreens(updatedScreenSchedule)
-  }
 
   const handleScheduleFormSubmit = (
     event: React.FormEvent<HTMLFormElement>
@@ -348,14 +287,18 @@ export default function MovieCalendar() {
         >
           <Modal.Section>
             <div className="flex flex-col justify-between h-[66vh]">
-              <Tabs tabs={tabs} selected={selected} onSelect={handleTabChange}>
+              <Tabs
+                tabs={tabs}
+                selected={selectedTab}
+                onSelect={handleTabChange}
+              >
                 <div ref={tabContentWrapper} className="p-4 h-[80%]">
-                  {tabs[selected].id === 'seats' && (
+                  {tabs[selectedTab].id === 'seats' && (
                     <>
                       <Screen />
                     </>
                   )}
-                  {tabs[selected].id === 'schedule' && (
+                  {tabs[selectedTab].id === 'schedule' && (
                     <div>
                       <form
                         onSubmit={handleScheduleFormSubmit}
@@ -400,7 +343,7 @@ export default function MovieCalendar() {
                       </form>
                     </div>
                   )}
-                  {tabs[selected].id === 'playlist' && (
+                  {tabs[selectedTab].id === 'playlist' && (
                     <div>
                       <Playlist
                         onSubmit={(list) => {
@@ -409,7 +352,7 @@ export default function MovieCalendar() {
                       />
                     </div>
                   )}
-                  {tabs[selected].id === 'types' && (
+                  {tabs[selectedTab].id === 'types' && (
                     <div>
                       <h3 className="font-bold">販売可能なチケット種別</h3>
                       <div className="flex gap-8 mt-4">
@@ -452,3 +395,87 @@ const tabs = [
     panelID: 'Types',
   },
 ]
+
+const useDndCalendarEvents = (initialScreens: Screen[]) => {
+  const [currentScreens, setCurrentScreens] = useState(initialScreens)
+
+  const allEventsInScreens = useMemo(
+    () =>
+      currentScreens.reduce((acc, screen) => {
+        return [...acc, ...screen.schedule]
+      }, []),
+    [currentScreens]
+  )
+  const [selectedEvent, setSelectedEvent] = useState<Movie>(null)
+
+  const handleEventDrop = ({
+    event,
+    start,
+    end,
+  }: EventInteractionArgs<Movie>) => {
+    const updatedScreenSchedule = currentScreens.map((screen) => {
+      const updatedSchedule = screen.schedule.map((movie) => {
+        if (
+          movie.resource.id === event.resource.id &&
+          movie.resource.screenId === event.resource.screenId
+        ) {
+          return {
+            ...movie,
+            start: new Date(start),
+            end: new Date(end),
+          }
+        }
+        return movie
+      })
+      return {
+        ...screen,
+        schedule: updatedSchedule,
+      }
+    })
+    setCurrentScreens(updatedScreenSchedule)
+  }
+
+  const handleEventClick = useCallback((calEvent: Event & Movie) => {
+    setSelectedEvent({
+      ...calEvent,
+    })
+  }, [])
+
+  const handleEventResize = ({
+    event,
+    start,
+    end,
+  }: EventInteractionArgs<Movie>) => {
+    const updatedScreenSchedule = currentScreens.map((screen) => {
+      const updatedSchedule = screen.schedule.map((movie) => {
+        if (
+          movie.resource.id === event.resource.id &&
+          movie.resource.screenId === event.resource.screenId
+        ) {
+          return {
+            ...movie,
+            start: new Date(start),
+            end: new Date(end),
+          }
+        }
+        return movie
+      })
+      return {
+        ...screen,
+        schedule: updatedSchedule,
+      }
+    })
+    setCurrentScreens(updatedScreenSchedule)
+  }
+
+  return {
+    handleEventDrop,
+    handleEventClick,
+    handleEventResize,
+    allEventsInScreens,
+    selectedEvent,
+    setSelectedEvent,
+    currentScreens,
+    setCurrentScreens,
+  }
+}
