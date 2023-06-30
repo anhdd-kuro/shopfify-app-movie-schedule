@@ -287,6 +287,7 @@ export default function MovieCalendar() {
             doShowMoreDrillDown={true}
             onSelectSlot={handleSelectSlot}
             selectable
+            popup
             // components={components}
           />
         </div>
