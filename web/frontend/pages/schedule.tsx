@@ -306,12 +306,15 @@ export default function MovieCalendar() {
               return {
                 className: clsx('cursor-grab'),
                 style: {
-                  backgroundColor:
-                    event.resource.isActive &&
-                    setColor(event.resource.screenId),
+                  backgroundColor: event.resource.isActive
+                    ? setColor(event.resource.screenId)
+                    : '#fff',
                   color:
                     !event.resource.isActive &&
                     setColor(event.resource.screenId),
+                  border:
+                    !event.resource.isActive &&
+                    `1px solid ${setColor(event.resource.screenId)}`,
                 },
               }
             }}

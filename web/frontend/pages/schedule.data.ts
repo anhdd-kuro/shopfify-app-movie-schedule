@@ -160,7 +160,7 @@ export const initialData = [
   {
     resource: {
       id: 9,
-      isActive: true,
+      isActive: false,
       screenId: 0,
     },
     title: 'Forrest Gump',
