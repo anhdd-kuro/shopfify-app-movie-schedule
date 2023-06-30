@@ -1,4 +1,4 @@
-import { Calendar, Event, momentLocalizer } from 'react-big-calendar'
+import { Calendar, Event, SlotInfo, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment-timezone'
 import withDragAndDrop, {
   EventInteractionArgs,
@@ -14,6 +14,7 @@ import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { toast } from 'react-toastify'
 import { Movie, initialData } from './schedule.data'
 import Select from 'react-select'
+import { nanoid } from 'nanoid'
 
 moment.tz.setDefault('Asia/Tokyo')
 
@@ -85,6 +86,7 @@ export default function MovieCalendar() {
     handleEventDrop,
     handleEventResize,
     setSelectedEvent,
+    handleSelectSlot,
   } = useDndCalendarEvents(initialScreens.current)
 
   const screensOptions = useMemo(
@@ -118,21 +120,36 @@ export default function MovieCalendar() {
     event.preventDefault()
     const formData = new FormData(event.currentTarget)
     const data = Object.fromEntries(formData.entries())
+    let updatedEvent: Movie = { ...selectedEvent }
 
     const updatedScreenSchedule = currentScreens.map((screen) => {
       if (screen.id === selectedEvent.resource.screenId) {
         const updatedSchedule = screen.schedule.map((movie) => {
-          if (movie.title === selectedEvent.title) {
+          if (
+            movie.resource.id === selectedEvent.resource.id &&
+            movie.resource.screenId === selectedEvent.resource.screenId
+          ) {
             const newStart = new Date(data['start-time'] as string)
             newStart.setUTCHours(newStart.getUTCHours() + 9)
             const newEnd = new Date(data['end-time'] as string)
             newEnd.setUTCHours(newEnd.getUTCHours() + 9)
 
-            return {
+            const movieId = +data['movieId']
+            const movieById = initialData.find((e) => e.resource.id === movieId)
+            const screen = +data['screen']
+
+            updatedEvent = {
               ...movie,
+              title: movieById?.title || '',
+              resource: {
+                ...movie.resource,
+                screenId: screen,
+              },
               start: newStart,
               end: newEnd,
             }
+
+            return updatedEvent
           }
           return movie
         })
@@ -143,9 +160,10 @@ export default function MovieCalendar() {
       }
       return screen
     })
-    toast.success('Schedule updated successfully')
-    console.log(updatedScreenSchedule)
+    console.log(updatedEvent)
     setCurrentScreens(updatedScreenSchedule)
+    setSelectedEvent(updatedEvent)
+    toast.success('Schedule updated successfully')
   }
 
   return (
@@ -221,6 +239,8 @@ export default function MovieCalendar() {
             }}
             onSelectEvent={handleEventClick}
             onEventResize={handleEventResize}
+            doShowMoreDrillDown={true}
+            onSelectSlot={handleSelectSlot}
             // components={components}
           />
         </div>
@@ -266,6 +286,49 @@ export default function MovieCalendar() {
                         onSubmit={handleScheduleFormSubmit}
                         className="flex flex-col gap-4 bg-gray-100 p-4 rounded-lg"
                       >
+                        <div className="flex items-center gap-2">
+                          <label className="font-bold w-24" htmlFor="title">
+                            作品:
+                          </label>
+                          <select
+                            name="movieId"
+                            className="border border-gray-400 p-2 rounded-md w-1/3"
+                          >
+                            {initialData.map((movie) => (
+                              <option
+                                key={movie.resource.id}
+                                value={movie.resource.id}
+                                selected={
+                                  movie.resource.id ===
+                                  selectedEvent.resource.id
+                                }
+                              >
+                                {movie.title}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <label className="font-bold w-24" htmlFor="screen">
+                            Screen:
+                          </label>
+                          <select
+                            name="screen"
+                            className="border border-gray-400 p-2 rounded-md w-1/3"
+                          >
+                            {initialScreens.current.map((screen) => (
+                              <option
+                                key={screen.id}
+                                value={screen.id}
+                                selected={
+                                  selectedEvent.resource.screenId === screen.id
+                                }
+                              >
+                                {screen.name}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
                         <div className="flex items-center gap-2">
                           <label
                             className="font-bold w-24"
@@ -430,6 +493,22 @@ const useDndCalendarEvents = (initialScreens: Screen[]) => {
     []
   )
 
+  const handleSelectSlot = useCallback(
+    (slotInfo: SlotInfo) => {
+      // setSelectedEvent({
+      //   start: slotInfo.start,
+      //   end: slotInfo.end,
+      //   resource: {
+      //     screenId: +slotInfo.resourceId,
+      //     id: +nanoid(),
+      //     isActive: false,
+      //     isProduct: false,
+      //   },
+      // })
+    },
+    [setSelectedEvent]
+  )
+
   return {
     handleEventDrop,
     handleEventClick,
@@ -439,5 +518,6 @@ const useDndCalendarEvents = (initialScreens: Screen[]) => {
     setSelectedEvent,
     currentScreens,
     setCurrentScreens,
+    handleSelectSlot,
   }
 }
