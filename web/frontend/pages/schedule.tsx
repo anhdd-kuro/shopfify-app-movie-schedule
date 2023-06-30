@@ -560,7 +560,6 @@ const useDndCalendarEvents = (initialScreens: Screen[]) => {
       setCurrentScreens((cur) =>
         cur.map((screen) => {
           const updatedSchedule = screen.schedule.map((movie) => {
-            console.log(movie.resource.id, event.resource.id)
             if (
               movie.resource.id === event.resource.id &&
               movie.resource.screenId === event.resource.screenId
