@@ -3,8 +3,9 @@ import moment from 'moment-timezone'
 
 export type AdditionalData = {
   id: number
-  isActive: boolean
   screenId: number
+  isActive: boolean
+  isProduct: boolean
 }
 
 export type Movie = Omit<Event, 'resource'> & {
@@ -41,11 +42,12 @@ function makeDateTime(
   return now.hour(options.hour).minute(options.minute).toDate()
 }
 
-export const initialData = [
+export const initialData: Movie[] = [
   {
     resource: {
       id: 1,
       isActive: true,
+      isProduct: true,
       screenId: 0,
     },
     title: 'The Shawshank Redemption',
@@ -60,7 +62,8 @@ export const initialData = [
   {
     resource: {
       id: 2,
-      isActive: true,
+      isActive: false,
+      isProduct: false,
       screenId: 0,
     },
     title: 'The Godfather',
@@ -76,6 +79,7 @@ export const initialData = [
     resource: {
       id: 3,
       isActive: true,
+      isProduct: true,
       screenId: 0,
     },
     title: 'The Dark Knight',
@@ -86,6 +90,7 @@ export const initialData = [
     resource: {
       id: 4,
       isActive: true,
+      isProduct: true,
       screenId: 0,
     },
     title: '12 Angry Men',
@@ -101,6 +106,7 @@ export const initialData = [
     resource: {
       id: 5,
       isActive: false,
+      isProduct: true,
       screenId: 0,
     },
     title: "Schindler's List",
@@ -116,6 +122,7 @@ export const initialData = [
     resource: {
       id: 6,
       isActive: true,
+      isProduct: true,
       screenId: 0,
     },
     title: 'The Lord of the Rings: The Return of the King',
@@ -131,6 +138,7 @@ export const initialData = [
     resource: {
       id: 7,
       isActive: true,
+      isProduct: true,
       screenId: 0,
     },
     title: 'Pulp Fiction',
@@ -146,6 +154,7 @@ export const initialData = [
     resource: {
       id: 8,
       isActive: true,
+      isProduct: true,
       screenId: 0,
     },
     title: 'The Lord of the Rings: The Fellowship of the Ring',
@@ -161,6 +170,7 @@ export const initialData = [
     resource: {
       id: 9,
       isActive: false,
+      isProduct: true,
       screenId: 0,
     },
     title: 'Forrest Gump',
@@ -176,6 +186,7 @@ export const initialData = [
     resource: {
       id: 10,
       isActive: false,
+      isProduct: true,
       screenId: 0,
     },
     title: 'Inception',
@@ -196,6 +207,7 @@ export const initialData = [
     resource: {
       id: 11,
       isActive: true,
+      isProduct: true,
       screenId: 0,
     },
     title: 'Future Event',
@@ -216,6 +228,7 @@ export const initialData = [
     resource: {
       id: 12,
       isActive: true,
+      isProduct: true,
       screenId: 0,
     },
     title: 'Another Future Event',

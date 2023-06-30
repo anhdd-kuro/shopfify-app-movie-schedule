@@ -199,17 +199,29 @@ export default function MovieCalendar() {
             onEventDrop={handleEventDrop}
             eventPropGetter={(event: Movie, start, end, isSelected) => {
               return {
-                className: clsx('cursor-grab'),
+                className: clsx('flex items-center', 'cursor-grab'),
                 style: {
-                  backgroundColor: event.resource.isActive
+                  height: 24,
+                  lineHeight: !event.resource.isProduct
+                    ? '20px'
+                    : !event.resource.isActive
+                    ? '22px'
+                    : '24px',
+                  padding: '0 4px',
+                  boxSizing: 'border-box',
+                  backgroundColor: !event.resource.isProduct
+                    ? 'lightgray'
+                    : event.resource.isActive
                     ? setColor(event.resource.screenId)
                     : '#fff',
-                  color:
-                    !event.resource.isActive &&
-                    setColor(event.resource.screenId),
-                  border:
-                    !event.resource.isActive &&
-                    `1px solid ${setColor(event.resource.screenId)}`,
+                  color: !event.resource.isProduct
+                    ? '#000'
+                    : !event.resource.isActive &&
+                      setColor(event.resource.screenId),
+                  border: !event.resource.isProduct
+                    ? `2px solid ${setColor(event.resource.screenId)}`
+                    : !event.resource.isActive &&
+                      `1px solid ${setColor(event.resource.screenId)}`,
                 },
               }
             }}
