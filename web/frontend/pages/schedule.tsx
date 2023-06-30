@@ -213,7 +213,7 @@ export default function MovieCalendar() {
     <div className="h-full py-2">
       <div ref={calendarWrapper} className="space-y-6">
         <h3 className="text-center text-xl font-bold">上映カーレンダー</h3>
-        <div className="sticky top-0 z-50">
+        <div className="sticky top-0 z-50 px-4">
           <Select
             closeMenuOnSelect={false}
             components={{}}
