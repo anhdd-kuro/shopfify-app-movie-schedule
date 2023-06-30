@@ -199,15 +199,8 @@ export default function MovieCalendar() {
             onEventDrop={handleEventDrop}
             eventPropGetter={(event: Movie, start, end, isSelected) => {
               return {
-                className: clsx('flex items-center', 'cursor-grab'),
+                className: clsx('cursor-grab'),
                 style: {
-                  height: 24,
-                  lineHeight: !event.resource.isProduct
-                    ? '20px'
-                    : !event.resource.isActive
-                    ? '22px'
-                    : '24px',
-                  padding: '0 4px',
                   boxSizing: 'border-box',
                   backgroundColor: !event.resource.isProduct
                     ? 'lightgray'
@@ -218,10 +211,11 @@ export default function MovieCalendar() {
                     ? '#000'
                     : !event.resource.isActive &&
                       setColor(event.resource.screenId),
-                  border: !event.resource.isProduct
-                    ? `2px solid ${setColor(event.resource.screenId)}`
-                    : !event.resource.isActive &&
-                      `1px solid ${setColor(event.resource.screenId)}`,
+                  borderWidth: 1,
+                  borderStyle: 'solid',
+                  borderColor: !event.resource.isProduct
+                    ? setColor(event.resource.screenId)
+                    : setColor(event.resource.screenId),
                 },
               }
             }}
@@ -409,32 +403,32 @@ const useDndCalendarEvents = (initialScreens: Screen[]) => {
     })
   }, [])
 
-  const handleEventResize = ({
-    event,
-    start,
-    end,
-  }: EventInteractionArgs<Movie>) => {
-    const updatedScreenSchedule = currentScreens.map((screen) => {
-      const updatedSchedule = screen.schedule.map((movie) => {
-        if (
-          movie.resource.id === event.resource.id &&
-          movie.resource.screenId === event.resource.screenId
-        ) {
+  const handleEventResize = useCallback(
+    ({ event, start, end }: EventInteractionArgs<Movie>) => {
+      setCurrentScreens((cur) =>
+        cur.map((screen) => {
+          const updatedSchedule = screen.schedule.map((movie) => {
+            if (
+              movie.resource.id === event.resource.id &&
+              movie.resource.screenId === event.resource.screenId
+            ) {
+              return {
+                ...movie,
+                start: new Date(start),
+                end: new Date(end),
+              }
+            }
+            return movie
+          })
           return {
-            ...movie,
-            start: new Date(start),
-            end: new Date(end),
+            ...screen,
+            schedule: updatedSchedule,
           }
-        }
-        return movie
-      })
-      return {
-        ...screen,
-        schedule: updatedSchedule,
-      }
-    })
-    setCurrentScreens(updatedScreenSchedule)
-  }
+        })
+      )
+    },
+    []
+  )
 
   return {
     handleEventDrop,
