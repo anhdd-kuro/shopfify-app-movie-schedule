@@ -21,6 +21,7 @@ import { toast } from 'react-toastify'
 import { Movie, initialData } from './schedule.data'
 import Select from 'react-select'
 import moment from 'moment-timezone'
+import { customAlphabet } from 'nanoid'
 
 const localizer = momentLocalizer(moment)
 
@@ -288,6 +289,8 @@ export default function MovieCalendar() {
             onSelectSlot={handleSelectSlot}
             selectable
             popup
+            step={15}
+            timeslots={4}
             // components={components}
           />
         </div>
@@ -386,7 +389,7 @@ export default function MovieCalendar() {
                             <option
                               value={-1}
                               disabled
-                              selected={selectedEvent.resource.id === -1}
+                              selected={selectedEvent.resource.id < 0}
                             >
                               未設定
                             </option>
@@ -394,10 +397,6 @@ export default function MovieCalendar() {
                               <option
                                 key={movie.resource.id}
                                 value={movie.resource.id}
-                                selected={
-                                  movie.resource.id ===
-                                  selectedEvent.resource.id
-                                }
                               >
                                 {movie.title}
                               </option>
@@ -413,13 +412,7 @@ export default function MovieCalendar() {
                             className="border border-gray-400 p-2 rounded-md w-1/3"
                           >
                             {initialScreens.current.map((screen) => (
-                              <option
-                                key={screen.id}
-                                value={screen.id}
-                                selected={
-                                  selectedEvent.resource.screenId === screen.id
-                                }
-                              >
+                              <option key={screen.id} value={screen.id}>
                                 {screen.name}
                               </option>
                             ))}
@@ -567,6 +560,7 @@ const useDndCalendarEvents = (initialScreens: Screen[]) => {
       setCurrentScreens((cur) =>
         cur.map((screen) => {
           const updatedSchedule = screen.schedule.map((movie) => {
+            console.log(movie.resource.id, event.resource.id)
             if (
               movie.resource.id === event.resource.id &&
               movie.resource.screenId === event.resource.screenId
@@ -595,7 +589,7 @@ const useDndCalendarEvents = (initialScreens: Screen[]) => {
       start: slotInfo.start,
       end: slotInfo.end,
       resource: {
-        id: -1,
+        id: -customAlphabet('0123456789', 5)(),
         screenId: -1,
         isActive: false,
         isProduct: false,
