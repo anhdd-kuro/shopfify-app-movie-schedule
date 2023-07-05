@@ -281,25 +281,33 @@ export default function MovieCalendar() {
                 </span>
               </h2>
               <div className="flex items-center gap-4 mt-4">
-                <button className="p-10 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm">
-                  商品として登録
-                </button>
+                {!selectedEvent.resource.isProduct && (
+                  <button className="p-10 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm">
+                    商品として登録
+                  </button>
+                )}
                 {/* Delete button */}
-                <button
-                  className="p-10 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded text-sm"
-                  onClick={deleteSelectedEvent}
-                >
-                  削除
-                </button>
+                {!selectedEvent.resource.isProduct &&
+                  !selectedEvent.resource.isActive && (
+                    <button
+                      className="p-10 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded text-sm"
+                      onClick={deleteSelectedEvent}
+                    >
+                      削除
+                    </button>
+                  )}
                 {/* Cancel Button */}
-                <button
-                  className="p-10 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded text-sm"
-                  onClick={() => {
-                    setSelectedEvent(null)
-                  }}
-                >
-                  販売キャンセル
-                </button>
+                {selectedEvent.resource.isProduct &&
+                  selectedEvent.resource.isActive && (
+                    <button
+                      className="p-10 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded text-sm"
+                      onClick={() => {
+                        setSelectedEvent(null)
+                      }}
+                    >
+                      販売キャンセル
+                    </button>
+                  )}
               </div>
             </div>
           }
