@@ -1,0 +1,19 @@
+query Input {
+  cart {
+    lines {
+      quantity
+      merchandise {
+        __typename
+        ...on ProductVariant {
+            id
+        }
+      }
+    }
+  }
+  discountNode {
+    # metafield(namespace: "volume-discount", key: "function-configuration"){
+    metafield(namespace: "$app:volume-discount", key: "function-configuration") {
+      value
+    }
+  }
+}

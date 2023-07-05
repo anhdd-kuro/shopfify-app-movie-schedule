@@ -20,9 +20,19 @@ export function useAuthenticatedFetch() {
   const fetchFunction = authenticatedFetch(app)
 
   return async (uri: RequestInfo, options?: RequestInit) => {
-    const response = await fetchFunction(uri, options)
-    checkHeadersForReauthorization(response.headers, app)
-    return response
+    try {
+      const response = await fetchFunction(uri, options)
+      checkHeadersForReauthorization(response.headers, app)
+
+      console.log(response)
+      if (response.status !== 200) {
+        throw new Error(response.statusText)
+      }
+      return response
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
   }
 }
 

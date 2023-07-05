@@ -1,0 +1,11 @@
+name = "product-discount"
+type = "product_discounts"
+api_version = "2023-04"
+
+[build]
+command = ""
+path = "dist/function.wasm"
+
+[ui.paths]
+create = "/discount/:functionId/new"
+details = "/discount/:functionId/:id"

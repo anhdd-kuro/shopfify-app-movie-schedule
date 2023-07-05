@@ -22,6 +22,7 @@ import { Movie, initialData } from './schedule.data'
 import Select from 'react-select'
 import moment from 'moment-timezone'
 import { customAlphabet } from 'nanoid'
+import { Tooltip } from 'react-tooltip'
 
 const localizer = momentLocalizer(moment)
 
@@ -379,7 +380,10 @@ export default function MovieCalendar() {
                         className="flex flex-col gap-4 bg-gray-100 p-4 rounded-lg"
                       >
                         <div className="flex items-center gap-2">
-                          <label className="font-bold w-24" htmlFor="title">
+                          <label
+                            className="font-bold text-lg w-24"
+                            htmlFor="title"
+                          >
                             作品:
                           </label>
                           <select
@@ -404,7 +408,10 @@ export default function MovieCalendar() {
                           </select>
                         </div>
                         <div className="flex items-center gap-2">
-                          <label className="font-bold w-24" htmlFor="screen">
+                          <label
+                            className="font-bold text-lg w-24"
+                            htmlFor="screen"
+                          >
                             Screen:
                           </label>
                           <select
@@ -420,7 +427,7 @@ export default function MovieCalendar() {
                         </div>
                         <div className="flex items-center gap-2">
                           <label
-                            className="font-bold w-24"
+                            className="font-bold text-lg w-24"
                             htmlFor="start-time"
                           >
                             Start Time:
@@ -436,7 +443,10 @@ export default function MovieCalendar() {
                           />
                         </div>
                         <div className="flex items-center gap-2">
-                          <label className="font-bold w-24" htmlFor="end-time">
+                          <label
+                            className="font-bold text-lg w-24"
+                            htmlFor="end-time"
+                          >
                             End Time:
                           </label>
                           <input
@@ -467,15 +477,47 @@ export default function MovieCalendar() {
                     </div>
                   )}
                   {tabs[selectedTab].id === 'types' && (
-                    <div>
-                      <h3 className="font-bold">販売可能なチケット種別</h3>
-                      <div className="flex gap-8 mt-4">
+                    <dl className="space-y-4">
+                      <dt className="font-bold text-lg">年齢週別</dt>
+                      <dd className="flex gap-8">
                         <Checkbox label="一般" checked />
                         <Checkbox label="小学生" checked />
                         <Checkbox label="学生" checked />
+                        <div data-tooltip-id="senior">
+                          <Checkbox label="シニア" checked />
+                          <Tooltip id="senior">
+                            <div>
+                              <p>60歳以上</p>
+                              <p>1,100円</p>
+                            </div>
+                          </Tooltip>
+                        </div>
+                      </dd>
+
+                      <dt className="font-bold text-lg">時間種別</dt>
+                      <dd className="flex gap-8">
+                        <Checkbox label="レイトショー (終了10時以降)" checked />
+                      </dd>
+
+                      <dt className="font-bold text-lg">団体割引</dt>
+                      <dd className="flex gap-8">
+                        <Checkbox label="団体割引（一般）" checked />
+                        <Checkbox label="団体割引（学生）" checked />
+                      </dd>
+
+                      <dt className="font-bold text-lg">会員割引</dt>
+                      <dd className="flex gap-8">
+                        <Checkbox label="火曜日の割引" checked />
+                        <Checkbox label="木曜日の割引" checked />
                         <Checkbox label="シニア" checked />
-                      </div>
-                    </div>
+                      </dd>
+
+                      <dt className="font-bold text-lg">ムビチケ</dt>
+                      <dd className="flex gap-8">
+                        <Checkbox label="ムビチケ当日券（一般）" checked />
+                        <Checkbox label="ムビチケ当日券（小人）" checked />
+                      </dd>
+                    </dl>
                   )}
                 </div>
               </Tabs>
