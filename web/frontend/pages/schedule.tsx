@@ -22,7 +22,7 @@ import { Movie, initialData } from './schedule.data'
 import Select from 'react-select'
 import moment from 'moment-timezone'
 import { customAlphabet } from 'nanoid'
-import { TicketTypes } from '../components'
+import { ScheduleForm, TicketTypes } from '../components'
 
 const localizer = momentLocalizer(moment)
 
@@ -158,58 +158,6 @@ export default function MovieCalendar() {
     (selectedTabIndex: number) => setSelectedTab(selectedTabIndex),
     []
   )
-
-  const handleScheduleFormSubmit = (
-    event: React.FormEvent<HTMLFormElement>
-  ) => {
-    event.preventDefault()
-    const formData = new FormData(event.currentTarget)
-    const data = Object.fromEntries(formData.entries())
-    let updatedEvent: Movie = { ...selectedEvent }
-
-    const updatedScreenSchedule = currentScreens.map((screen) => {
-      if (screen.id === selectedEvent.resource.screenId) {
-        const updatedSchedule = screen.schedule.map((movie) => {
-          if (
-            movie.resource.id === selectedEvent.resource.id &&
-            movie.resource.screenId === selectedEvent.resource.screenId
-          ) {
-            const newStart = new Date(data['start-time'] as string)
-            newStart.setUTCHours(newStart.getUTCHours() + 9)
-            const newEnd = new Date(data['end-time'] as string)
-            newEnd.setUTCHours(newEnd.getUTCHours() + 9)
-
-            const movieId = +data['movieId']
-            const movieById = initialData.find((e) => e.resource.id === movieId)
-            const screen = +data['screen']
-
-            updatedEvent = {
-              ...movie,
-              title: movieById?.title || '未設定',
-              resource: {
-                ...movie.resource,
-                screenId: screen,
-              },
-              start: newStart,
-              end: newEnd,
-            }
-
-            return updatedEvent
-          }
-          return movie
-        })
-        return {
-          ...screen,
-          schedule: updatedSchedule,
-        }
-      }
-      return screen
-    })
-    console.log(updatedEvent)
-    setCurrentScreens(updatedScreenSchedule)
-    setSelectedEvent(updatedEvent)
-    toast.success('Schedule updated successfully')
-  }
 
   return (
     <div className="h-full py-2">
@@ -374,98 +322,24 @@ export default function MovieCalendar() {
                     </>
                   )}
                   {tabs[selectedTab].id === 'schedule' && (
-                    <div>
-                      <form
-                        onSubmit={handleScheduleFormSubmit}
-                        className="flex flex-col gap-4 bg-gray-100 p-4 rounded-lg"
-                      >
-                        <div className="flex items-center gap-2">
-                          <label
-                            className="font-bold text-lg w-24"
-                            htmlFor="title"
-                          >
-                            作品:
-                          </label>
-                          <select
-                            name="movieId"
-                            className="border border-gray-400 p-2 rounded-md w-1/3"
-                          >
-                            <option
-                              value={-1}
-                              disabled
-                              selected={selectedEvent.resource.id < 0}
-                            >
-                              未設定
-                            </option>
-                            {initialData.map((movie) => (
-                              <option
-                                key={movie.resource.id}
-                                value={movie.resource.id}
-                              >
-                                {movie.title}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <label
-                            className="font-bold text-lg w-24"
-                            htmlFor="screen"
-                          >
-                            Screen:
-                          </label>
-                          <select
-                            name="screen"
-                            className="border border-gray-400 p-2 rounded-md w-1/3"
-                          >
-                            {initialScreens.current.map((screen) => (
-                              <option key={screen.id} value={screen.id}>
-                                {screen.name}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <label
-                            className="font-bold text-lg w-24"
-                            htmlFor="start-time"
-                          >
-                            Start Time:
-                          </label>
-                          <input
-                            type="datetime-local"
-                            id="start-time"
-                            name="start-time"
-                            defaultValue={selectedEvent.start
-                              .toISOString()
-                              .slice(0, 16)}
-                            className="border border-gray-400 p-2 rounded-md w-1/3"
-                          />
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <label
-                            className="font-bold text-lg w-24"
-                            htmlFor="end-time"
-                          >
-                            End Time:
-                          </label>
-                          <input
-                            type="datetime-local"
-                            id="end-time"
-                            name="end-time"
-                            defaultValue={selectedEvent.end
-                              .toISOString()
-                              .slice(0, 16)}
-                            className="border border-gray-400 p-2 rounded-md w-1/3"
-                          />
-                        </div>
-                        <input
-                          type="submit"
-                          value="更新"
-                          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 w-1/3 cursor-pointer"
-                        />
-                      </form>
-                    </div>
+                    <ScheduleForm
+                      currentScreens={currentScreens}
+                      movies={initialData}
+                      initialScreens={initialScreens}
+                      selectedMovie={selectedEvent}
+                      onSetCurrentEvent={(newSelectedEvent) => {
+                        setSelectedEvent(newSelectedEvent)
+                        toast.success('Schedule updated successfully', {
+                          toastId: 'ScheduleSubmitted',
+                        })
+                      }}
+                      onSetCurrentScreens={(newCurrentScreens) => {
+                        setCurrentScreens(newCurrentScreens)
+                        toast.success('Schedule updated successfully', {
+                          toastId: 'ScheduleSubmitted',
+                        })
+                      }}
+                    />
                   )}
                   {tabs[selectedTab].id === 'playlist' && (
                     <div>
