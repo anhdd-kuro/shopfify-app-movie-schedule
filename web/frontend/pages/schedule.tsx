@@ -280,7 +280,15 @@ export default function MovieCalendar() {
                   - {selectedEvent.title || '作品未設定'}
                 </span>
               </h2>
-              <div className="flex items-center gap-4 mt-4">
+              <div
+                className={clsx(
+                  selectedEvent.resource.isProduct &&
+                    !selectedEvent.resource.isActive
+                    ? ''
+                    : 'mt-4',
+                  'flex items-center gap-4'
+                )}
+              >
                 {!selectedEvent.resource.isProduct && (
                   <button className="p-10 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm">
                     商品として登録
