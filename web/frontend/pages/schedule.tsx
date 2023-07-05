@@ -13,7 +13,7 @@ import 'react-big-calendar/lib/addons/dragAndDrop/styles.css'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import { useCallback, useMemo, useRef, useState } from 'react'
 import clsx from 'clsx'
-import { Checkbox, Modal, Tabs } from '@shopify/polaris'
+import { Modal, Tabs } from '@shopify/polaris'
 import Screen from '../components/Screen'
 import Playlist from '../components/Playlist'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
@@ -22,7 +22,7 @@ import { Movie, initialData } from './schedule.data'
 import Select from 'react-select'
 import moment from 'moment-timezone'
 import { customAlphabet } from 'nanoid'
-import { Tooltip } from 'react-tooltip'
+import { TicketTypes } from '../components'
 
 const localizer = momentLocalizer(moment)
 
@@ -476,49 +476,7 @@ export default function MovieCalendar() {
                       />
                     </div>
                   )}
-                  {tabs[selectedTab].id === 'types' && (
-                    <dl className="space-y-4">
-                      <dt className="font-bold text-lg">年齢週別</dt>
-                      <dd className="flex gap-8">
-                        <Checkbox label="一般" checked />
-                        <Checkbox label="小学生" checked />
-                        <Checkbox label="学生" checked />
-                        <div data-tooltip-id="senior">
-                          <Checkbox label="シニア" checked />
-                          <Tooltip id="senior">
-                            <div>
-                              <p>60歳以上</p>
-                              <p>1,100円</p>
-                            </div>
-                          </Tooltip>
-                        </div>
-                      </dd>
-
-                      <dt className="font-bold text-lg">時間種別</dt>
-                      <dd className="flex gap-8">
-                        <Checkbox label="レイトショー (終了10時以降)" checked />
-                      </dd>
-
-                      <dt className="font-bold text-lg">団体割引</dt>
-                      <dd className="flex gap-8">
-                        <Checkbox label="団体割引（一般）" checked />
-                        <Checkbox label="団体割引（学生）" checked />
-                      </dd>
-
-                      <dt className="font-bold text-lg">会員割引</dt>
-                      <dd className="flex gap-8">
-                        <Checkbox label="火曜日の割引" checked />
-                        <Checkbox label="木曜日の割引" checked />
-                        <Checkbox label="シニア" checked />
-                      </dd>
-
-                      <dt className="font-bold text-lg">ムビチケ</dt>
-                      <dd className="flex gap-8">
-                        <Checkbox label="ムビチケ当日券（一般）" checked />
-                        <Checkbox label="ムビチケ当日券（小人）" checked />
-                      </dd>
-                    </dl>
-                  )}
+                  {tabs[selectedTab].id === 'types' && <TicketTypes />}
                 </div>
               </Tabs>
             </div>
