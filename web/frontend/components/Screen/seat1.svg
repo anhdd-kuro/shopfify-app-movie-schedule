@@ -216,11 +216,11 @@
 		<polygon class="st4" points="250,361 259.818,361 259.818,368.409 276.182,368.409 276.182,361 286,361 286,397 250,397 		"></polygon>
 		<text transform="matrix(1 0 0 1 262.1758 390)" class="st2 st0 st5">9</text>
 	</g>
-	<g id="G-10" class="not">
+	<g id="G-10" >
 		<polygon class="st4" points="206,361 215.818,361 215.818,368.409 232.182,368.409 232.182,361 242,361 242,397 206,397 		"></polygon>
 		<text transform="matrix(1 0 0 1 212.3525 390)" class="st2 st0 st5">10</text>
 	</g>
-	<g id="G-11" class="not">
+	<g id="G-11" >
 		<polygon class="st4" points="162,361 171.818,361 171.818,368.409 188.182,368.409 188.182,361 198,361 198,397 162,397 		"></polygon>
 		<text transform="matrix(1 0 0 1 168.3525 390)" class="st2 st0 st5">11</text>
 	</g>
@@ -244,7 +244,7 @@
 		<polygon class="st4" points="426,422 435.818,422 435.818,429.409 452.182,429.409 452.182,422 462,422 462,458 426,458 		"></polygon>
 		<text transform="matrix(1 0 0 1 438.1758 451)" class="st2 st0 st5">5</text>
 	</g>
-	<g id="F-6" class="not">
+	<g id="F-6" >
 		<polygon class="st4" points="382,422 391.818,422 391.818,429.409 408.182,429.409 408.182,422 418,422 418,458 382,458 		"></polygon>
 		<text transform="matrix(1 0 0 1 394.1758 451)" class="st2 st0 st5">6</text>
 	</g>
@@ -440,7 +440,7 @@
 		<polygon class="st4" points="206,666 215.818,666 215.818,673.409 232.182,673.409 232.182,666 242,666 242,702 206,702 		"></polygon>
 		<text transform="matrix(1 0 0 1 212.3525 695)" class="st2 st0 st5">10</text>
 	</g>
-	<g id="B-11" class="not">
+	<g id="B-11" >
 		<polygon class="st4" points="162,666 171.818,666 171.818,673.409 188.182,673.409 188.182,666 198,666 198,702 162,702 		"></polygon>
 		<text transform="matrix(1 0 0 1 168.3525 695)" class="st2 st0 st5">11</text>
 	</g>
@@ -480,7 +480,7 @@
 		<polygon class="st4" points="250,727 259.818,727 259.818,734.409 276.182,734.409 276.182,727 286,727 286,763 250,763 		"></polygon>
 		<text transform="matrix(1 0 0 1 262.1758 756)" class="st2 st0 st5">9</text>
 	</g>
-	<g id="A-10" class="not">
+	<g id="A-10" >
 		<polygon class="st4" points="206,727 215.818,727 215.818,734.409 232.182,734.409 232.182,727 242,727 242,763 206,763 		"></polygon>
 		<text transform="matrix(1 0 0 1 212.3525 756)" class="st2 st0 st5">10</text>
 	</g>
@@ -488,91 +488,91 @@
 		<polygon class="st4" points="162,727 171.818,727 171.818,734.409 188.182,734.409 188.182,727 198,727 198,763 162,763 		"></polygon>
 		<text transform="matrix(1 0 0 1 168.3525 756)" class="st2 st0 st5">11</text>
 	</g>
-	<g id="K-1" class="not">
+	<g id="K-1" >
 		<circle class="st4" cx="91" cy="895" r="15"></circle>
 		<text transform="matrix(1 0 0 1 86.4238 901)" class="st2 st0 st3">1</text>
 	</g>
-	<g id="K-2" class="not">
+	<g id="K-2" >
 		<circle class="st4" cx="135" cy="895" r="15"></circle>
 		<text transform="matrix(1 0 0 1 130.4238 901)" class="st2 st0 st3">2</text>
 	</g>
-	<g id="K-3" class="not">
+	<g id="K-3" >
 		<circle class="st4" cx="179" cy="895" r="15"></circle>
 		<text transform="matrix(1 0 0 1 174.4238 901)" class="st2 st0 st3">3</text>
 	</g>
-	<g id="K-4" class="not">
+	<g id="K-4" >
 		<circle class="st4" cx="223" cy="895" r="15"></circle>
 		<text transform="matrix(1 0 0 1 218.4238 901)" class="st2 st0 st3">4</text>
 	</g>
-	<g id="K-5" class="not">
+	<g id="K-5" >
 		<circle class="st4" cx="267" cy="895" r="15"></circle>
 		<text transform="matrix(1 0 0 1 262.4238 901)" class="st2 st0 st3">5</text>
 	</g>
-	<g id="K-6" class="not">
+	<g id="K-6" >
 		<circle class="st4" cx="311" cy="895" r="15"></circle>
 		<text transform="matrix(1 0 0 1 306.4238 901)" class="st2 st0 st3">6</text>
 	</g>
-	<g id="K-7" class="not">
+	<g id="K-7" >
 		<circle class="st4" cx="355" cy="895" r="15"></circle>
 		<text transform="matrix(1 0 0 1 350.4238 901)" class="st2 st0 st3">7</text>
 	</g>
-	<g id="K-8" class="not">
+	<g id="K-8" >
 		<circle class="st4" cx="399" cy="895" r="15"></circle>
 		<text transform="matrix(1 0 0 1 394.4238 901)" class="st2 st0 st3">8</text>
 	</g>
-	<g id="K-9" class="not">
+	<g id="K-9" >
 		<circle class="st4" cx="443" cy="895" r="15"></circle>
 		<text transform="matrix(1 0 0 1 438.4238 901)" class="st2 st0 st3">9</text>
 	</g>
-	<g id="K-10" class="not">
+	<g id="K-10" >
 		<circle class="st4" cx="487" cy="895" r="15"></circle>
 		<text transform="matrix(1 0 0 1 477.8477 901)" class="st2 st0 st3">10</text>
 	</g>
-	<g id="K-11" class="not">
+	<g id="K-11" >
 		<circle class="st4" cx="531" cy="895" r="15"></circle>
 		<text transform="matrix(1 0 0 1 521.8477 901)" class="st2 st0 st3">11</text>
 	</g>
-	<g id="K-12" class="not">
+	<g id="K-12" >
 		<circle class="st4" cx="575" cy="895" r="15"></circle>
 		<text transform="matrix(1 0 0 1 565.8477 901)" class="st2 st0 st3">12</text>
 	</g>
-	<g id="K-13" class="not">
+	<g id="K-13" >
 		<circle class="st4" cx="619" cy="895" r="15"></circle>
 		<text transform="matrix(1 0 0 1 609.8477 901)" class="st2 st0 st3">13</text>
 	</g>
-	<g id="K-14" class="not">
+	<g id="K-14" >
 		<circle class="st4" cx="663" cy="895" r="15"></circle>
 		<text transform="matrix(1 0 0 1 653.8477 901)" class="st2 st0 st3">14</text>
 	</g>
-	<g id="K-15" class="not">
+	<g id="K-15" >
 		<circle class="st4" cx="707" cy="895" r="15"></circle>
 		<text transform="matrix(1 0 0 1 697.8477 901)" class="st2 st0 st3">15</text>
 	</g>
-	<g id="K-16" class="not">
+	<g id="K-16" >
 		<circle class="st4" cx="91" cy="937" r="15"></circle>
 		<text transform="matrix(1 0 0 1 81.8477 943)" class="st2 st0 st3">16</text>
 	</g>
-	<g id="K-17" class="not">
+	<g id="K-17" >
 		<circle class="st4" cx="135" cy="937" r="15"></circle>
 		<text transform="matrix(1 0 0 1 125.8477 943)" class="st2 st0 st3">17</text>
 	</g>
-	<g id="K-18" class="not">
+	<g id="K-18" >
 		<circle class="st4" cx="179" cy="937" r="15"></circle>
 		<text transform="matrix(1 0 0 1 169.8477 943)" class="st2 st0 st3">18</text>
 	</g>
-	<g id="K-19" class="not">
+	<g id="K-19" >
 		<circle class="st4" cx="223" cy="937" r="15"></circle>
 		<text transform="matrix(1 0 0 1 213.8477 943)" class="st2 st0 st3">19</text>
 	</g>
-	<g id="K-20" class="not">
+	<g id="K-20" >
 		<circle class="st4" cx="267" cy="937" r="15"></circle>
 		<text transform="matrix(1 0 0 1 257.8477 943)" class="st2 st0 st3">20</text>
 	</g>
-	<g id="K-21" class="not">
+	<g id="K-21" >
 		<circle class="st4" cx="311" cy="937" r="15"></circle>
 		<text transform="matrix(1 0 0 1 301.8477 943)" class="st2 st0 st3">21</text>
 	</g>
-	<g id="K-22" class="not">
+	<g id="K-22" >
 		<circle class="st4" cx="355" cy="937" r="15"></circle>
 		<text transform="matrix(1 0 0 1 345.8477 943)" class="st2 st0 st3">22</text>
 	</g>

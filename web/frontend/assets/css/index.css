@@ -32,22 +32,27 @@
   user-select: none;
 }
 
+#seatmap > g {
+  cursor: pointer;
+}
+
 .screenImg g#seatmap text {
   font-family: 'Noto Sans', 'sans-serif';
 }
 
-.screenImg g.reserved polygon,
-.screenImg g.reserved circle,
-.screenImg g.reserved path {
+.screenImg g.selected polygon,
+.screenImg g.selected circle,
+.screenImg g.selected path {
   fill: var(--seat-selected-color);
 }
 
-.screenImg g.not polygon,
-.screenImg g.not circle,
-.screenImg g.not path {
+.screenImg g.unavailable polygon,
+.screenImg g.unavailable circle,
+.screenImg g.unavailable path {
   fill: var(--seat-reserved-color);
+  pointer-events: none;
 }
-.screenImg g.not text {
+.screenImg g.unavailable text {
 	fill: gray;
 }
 
