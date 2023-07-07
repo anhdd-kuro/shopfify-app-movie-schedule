@@ -497,6 +497,10 @@ const useDndCalendarEvents = (initialScreens: Screen[]) => {
   )
 
   const handleSelectSlot = useCallback((slotInfo: SlotInfo) => {
+    const confirmed = window.confirm('イベントを作成しますか?')
+
+    if (!confirmed) return
+
     const newShow = {
       title: '未設定',
       start: slotInfo.start,
