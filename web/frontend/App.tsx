@@ -3,6 +3,7 @@ import { NavigationMenu } from '@shopify/app-bridge-react'
 import Routes from './Routes'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import 'moment/dist/locale/ja'
 
 import { AppBridgeProvider, QueryProvider, PolarisProvider } from './components'
 import ReactDndProvider from './components/providers/DndProvider'

@@ -72,16 +72,12 @@ export const initialData: Movie[] = [
       screenId: 0,
     },
     title: 'The Godfather',
-    start: makeDateTime('future', {
-      amount: 1,
-      unit: 'days',
-      hour: 14,
+    start: makeDateTime('today', {
+      hour: 16,
       minute: 0,
     }),
-    end: makeDateTime('future', {
-      amount: 1,
-      unit: 'days',
-      hour: 16,
+    end: makeDateTime('today', {
+      hour: 18,
       minute: 0,
     }),
   },
@@ -95,6 +91,17 @@ export const initialData: Movie[] = [
     title: 'The Dark Knight',
     start: makeDateTime('today', { hour: 18, minute: 0 }),
     end: makeDateTime('today', { hour: 20, minute: 0 }),
+  },
+  {
+    resource: {
+      id: 13,
+      isActive: true,
+      isProduct: true,
+      screenId: 0,
+    },
+    title: 'Spider man',
+    start: makeDateTime('today', { hour: 14, minute: 0 }),
+    end: makeDateTime('today', { hour: 16, minute: 0 }),
   },
   {
     resource: {

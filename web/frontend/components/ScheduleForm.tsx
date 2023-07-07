@@ -81,7 +81,7 @@ export default function ScheduleForm({
         className="flex flex-col gap-4 bg-gray-100 p-4 rounded-lg"
       >
         <div className="flex items-center gap-2">
-          <label className="font-bold text-lg w-24" htmlFor="title">
+          <label className="font-bold w-24" htmlFor="title">
             作品:
           </label>
           <select
@@ -102,7 +102,7 @@ export default function ScheduleForm({
           </select>
         </div>
         <div className="flex items-center gap-2">
-          <label className="font-bold text-lg w-24" htmlFor="screen">
+          <label className="font-bold w-24" htmlFor="screen">
             スクリーン:
           </label>
           <select
@@ -118,7 +118,7 @@ export default function ScheduleForm({
           </select>
         </div>
         <div className="flex items-center gap-2">
-          <label className="font-bold text-lg w-24" htmlFor="start-time">
+          <label className="font-bold w-24" htmlFor="start-time">
             上映開始:
           </label>
           <input
@@ -130,7 +130,7 @@ export default function ScheduleForm({
           />
         </div>
         <div className="flex items-center gap-2">
-          <label className="font-bold text-lg w-24" htmlFor="end-time">
+          <label className="font-bold w-24" htmlFor="end-time">
             上映終了:
           </label>
           <input

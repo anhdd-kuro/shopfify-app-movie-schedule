@@ -12,6 +12,7 @@
   font-size: 0px;
   line-height: 1;
 }
+
 .rbc-btn-group:nth-child(1) > button:nth-child(1)::before{
   font-size: 14px;
   content: '今日';
@@ -24,6 +25,7 @@
   font-size: 14px;
   content: '→';
 }
+
 .rbc-btn-group:nth-child(3) > button:nth-child(1)::before{
   font-size: 14px;
   content: '月';
@@ -38,5 +40,12 @@
 }
 .rbc-btn-group:nth-child(3) > button:nth-child(4)::before{
   font-size: 14px;
-  content: 'テーブル';
+  content: '外掲示用';
+}
+
+.rbc-header:first-child{
+  @apply text-red-500;
+}
+.rbc-header:last-child{
+  @apply text-blue-500;
 }

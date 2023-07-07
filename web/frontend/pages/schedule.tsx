@@ -4,14 +4,14 @@ import {
   Formats,
   SlotInfo,
   momentLocalizer,
+  ViewsProps,
 } from 'react-big-calendar'
-import 'moment/locale/ja'
 import withDragAndDrop, {
   EventInteractionArgs,
 } from 'react-big-calendar/lib/addons/dragAndDrop'
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.css'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
-import { useCallback, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 import clsx from 'clsx'
 import { Modal, Tabs } from '@shopify/polaris'
 import Screen from '../components/Screen'
@@ -23,6 +23,7 @@ import Select from 'react-select'
 import moment from 'moment-timezone'
 import { customAlphabet } from 'nanoid'
 import { ScheduleForm, TicketTypes } from '../components'
+import { OutsideDisplayView } from '../components'
 
 const localizer = momentLocalizer(moment)
 
@@ -54,13 +55,13 @@ const formats: Formats = {
 
 const DnDCalendar = withDragAndDrop(Calendar)
 
-type Screen = {
+export type Screen = {
   id: number
   name: string
   schedule: Movie[]
 }
 
-const colors = [
+export const colors = [
   '#FFC300',
   '#3D9970',
   '#FF5733',
@@ -85,7 +86,7 @@ export default function MovieCalendar() {
       id: 1,
       name: 'シネマ 1',
       schedule: initialData
-        .slice(0, 3)
+        .slice(0, 4)
         .map((e) => ({ ...e, resource: { ...e.resource, screenId: 1 } })),
     },
     {
@@ -202,8 +203,16 @@ export default function MovieCalendar() {
             }}
           />
         </div>
-        <div className="h-screen min-h-[600px] p-4 overflow-auto">
+        <div className="h-screen min-h-[600px] p-4 overflow-auto bg-white">
           <DnDCalendar
+            views={
+              {
+                month: true,
+                week: true,
+                day: true,
+                outside: OutsideDisplayView,
+              } as ViewsProps<Movie> & { outside: React.FC }
+            }
             culture={moment.locale('ja')}
             localizer={localizer}
             formats={formats}
@@ -262,7 +271,7 @@ export default function MovieCalendar() {
                       : 'gray',
                   }}
                 >
-                  {selectedEvent.resource.isActive ? '公開中' : '非公開'}
+                  {selectedEvent.resource.isActive ? '販売中' : '非公開'}
                 </span>
                 {!selectedEvent.resource.isProduct && (
                   <span
