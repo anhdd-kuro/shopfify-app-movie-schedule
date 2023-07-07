@@ -92,7 +92,7 @@ export default function MovieCalendar() {
     {
       id: 2,
       name: 'シネマ 2',
-      schedule: initialData.slice(4, 7).map((e) => ({
+      schedule: initialData.slice(3, 7).map((e) => ({
         ...e,
         resource: { ...e.resource, screenId: 2 },
       })),

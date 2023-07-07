@@ -135,13 +135,13 @@ export const initialData: Movie[] = [
     start: makeDateTime('today', {
       amount: 5,
       unit: 'days',
-      hour: 14,
+      hour: 9,
       minute: 0,
     }),
     end: makeDateTime('today', {
       amount: 5,
       unit: 'days',
-      hour: 16,
+      hour: 12,
       minute: 0,
     }),
   },

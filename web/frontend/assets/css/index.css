@@ -49,3 +49,67 @@
 .rbc-header:last-child{
   @apply text-blue-500;
 }
+
+:root {
+  --seat-selected-color: #2dbcb6;
+  --seat-reserved-color: #4B4B4B;
+  --seat-maintain-color: #ED1A3B;
+  --background-color: #DAE5DA;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans&amp;display=swap');
+
+.screenImg .svg {
+  user-select: none;
+}
+
+.screenImg g#seatmap text {
+  font-family: 'Noto Sans', 'sans-serif';
+}
+
+.screenImg g.reserved polygon,
+.screenImg g.reserved circle,
+.screenImg g.reserved path {
+  fill: var(--seat-selected-color);
+}
+
+.screenImg g.not polygon,
+.screenImg g.not circle,
+.screenImg g.not path {
+  fill: var(--seat-reserved-color);
+}
+.screenImg g.not text {
+	fill: gray;
+}
+
+.screenImg g.maintain polygon,
+.screenImg g.maintain circle,
+.screenImg g.maintain path {
+  fill: var(--seat-maintain-color);
+}
+
+.screenImg .st0 {
+  font-family: 'Noto Sans';
+}
+
+.screenImg .st1 {
+  fill: none;
+  stroke: #000000;
+  stroke-width: 4;
+}
+
+.screenImg .st2 {
+  fill: #003300;
+}
+
+.screenImg .st3 {
+  font-size: 16px;
+}
+
+.screenImg .st4 {
+  fill: var(--background-color);
+}
+
+.screenImg .st5 {
+  font-size: 20px;
+}
