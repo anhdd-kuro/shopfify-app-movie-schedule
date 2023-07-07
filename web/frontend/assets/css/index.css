@@ -1,6 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans&amp;display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 
 @layer utilities {
   .flex-center {
@@ -9,38 +11,7 @@
 }
 
 .rbc-toolbar .rbc-btn-group > button{
-  font-size: 0px;
   line-height: 1;
-}
-
-.rbc-btn-group:nth-child(1) > button:nth-child(1)::before{
-  font-size: 14px;
-  content: '今日';
-}
-.rbc-btn-group:nth-child(1) > button:nth-child(2)::before{
-  font-size: 14px;
-  content: '←';
-}
-.rbc-btn-group:nth-child(1) > button:nth-child(3)::before{
-  font-size: 14px;
-  content: '→';
-}
-
-.rbc-btn-group:nth-child(3) > button:nth-child(1)::before{
-  font-size: 14px;
-  content: '月';
-}
-.rbc-btn-group:nth-child(3) > button:nth-child(2)::before{
-  font-size: 14px;
-  content: '週';
-}
-.rbc-btn-group:nth-child(3) > button:nth-child(3)::before{
-  font-size: 14px;
-  content: '日';
-}
-.rbc-btn-group:nth-child(3) > button:nth-child(4)::before{
-  font-size: 14px;
-  content: '外掲示用';
 }
 
 .rbc-header:first-child{
@@ -56,8 +27,6 @@
   --seat-maintain-color: #ED1A3B;
   --background-color: #DAE5DA;
 }
-
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans&amp;display=swap');
 
 .screenImg .svg {
   user-select: none;

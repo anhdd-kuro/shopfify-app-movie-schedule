@@ -5,6 +5,7 @@ import {
   SlotInfo,
   momentLocalizer,
   ViewsProps,
+  Messages,
 } from 'react-big-calendar'
 import withDragAndDrop, {
   EventInteractionArgs,
@@ -241,6 +242,20 @@ export default function MovieCalendar() {
                 },
               }
             }}
+            messages={
+              {
+                today: '今日',
+                previous: '←',
+                next: '→',
+                day: '日',
+                month: '月',
+                week: '週',
+                outside: '外掲示用',
+                showMore: (total) => `+${total} 見る`,
+              } as Messages & {
+                outside: string
+              }
+            }
             onSelectEvent={handleEventClick}
             onEventResize={handleEventResize}
             doShowMoreDrillDown={true}
