@@ -4,6 +4,7 @@ import React, { useMemo, useState } from 'react'
 import { ViewStatic, ViewProps } from 'react-big-calendar'
 import { colors } from '../../pages/schedule'
 import { Checkbox } from '@shopify/polaris'
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 type GroupedEvents = {
   [screenId: string]: Movie[]
@@ -17,6 +18,8 @@ const CustomDay: React.FC<ViewProps<Movie>> & ViewStatic = ({
   const [isActiveChecked, setIsActiveChecked] = useState(true)
   const [isProductChecked, setIsProductChecked] = useState(true)
   const [isShowLabel, setIsShowLabel] = useState(true)
+
+  const [scheduleWrapperRef] = useAutoAnimate({})
 
   const groupedEvents = useMemo(() => {
     const _groupedEvents: GroupedEvents = {}
@@ -53,28 +56,35 @@ const CustomDay: React.FC<ViewProps<Movie>> & ViewStatic = ({
   }, [date, events, isActiveChecked, isProductChecked])
 
   return (
-    <div className="w-full mx-auto mt-8 bg-white space-y-4">
-      <div className="flex gap-4">
-        <Checkbox
-          label="販売中"
-          checked={isActiveChecked}
-          onChange={() => setIsActiveChecked(!isActiveChecked)}
-        />
-        <Checkbox
-          label="販売可能"
-          checked={isProductChecked}
-          onChange={() => setIsProductChecked(!isProductChecked)}
-        />
-        <Checkbox
-          label="ラベル表示"
-          checked={isShowLabel}
-          onChange={() => setIsShowLabel(!isShowLabel)}
-        />
+    <div className="w-full mx-auto mt-6 bg-white space-y-4">
+      <div className="flex gap-8 items-center">
+        <div className="flex gap-4 items-center">
+          <p className="font-bold">絞り込み: </p>
+          <Checkbox
+            label="販売中"
+            checked={isActiveChecked}
+            onChange={() => setIsActiveChecked(!isActiveChecked)}
+          />
+          <Checkbox
+            label="販売可能"
+            checked={isProductChecked}
+            onChange={() => setIsProductChecked(!isProductChecked)}
+          />
+        </div>
+        <hr className="block w-[1px] h-4 border-l border-gray-500" />
+        <div className="flex gap-4 items-center">
+          <p className="font-bold">表示: </p>
+          <Checkbox
+            label="ラベル表示"
+            checked={isShowLabel}
+            onChange={() => setIsShowLabel(!isShowLabel)}
+          />
+        </div>
       </div>
-      <dl className="flex flex-wrap">
+      <dl ref={scheduleWrapperRef} id="day-schedule" className="flex flex-wrap">
         {/* Replace 4 with the desired number of columns */}
         {Object.entries(groupedEvents).map(([screenId, events], index) => (
-          <div key={screenId} className="w-1/2 border">
+          <div key={screenId} className="w-1/2 ">
             <dt
               className="flex-center border-b text-white"
               style={{
@@ -88,7 +98,7 @@ const CustomDay: React.FC<ViewProps<Movie>> & ViewStatic = ({
                 {events.map((event) => (
                   <li
                     key={event.resource.id}
-                    className="flex divide-x border-b border-gray-300"
+                    className="flex divide-x border-b border-l border-r border-gray-300"
                   >
                     <div className="flex-1 p-4 flex gap-2 items-center">
                       <h4>{event.title}</h4> {/* Status label */}
@@ -132,7 +142,7 @@ const CustomDay: React.FC<ViewProps<Movie>> & ViewStatic = ({
 }
 
 CustomDay.title = (date: Date) => {
-  return `${moment(date).locale('ja').format('MM月/DD日 (ddd)')}のスケジュール`
+  return `${moment(date).locale('ja').format('MM月/DD日 (ddd)')} スケジュール`
 }
 
 CustomDay.navigate = (date: Date, action: 'PREV' | 'NEXT' | 'DATE') => {
