@@ -274,8 +274,7 @@ export default function MovieCalendar() {
           open={!!selectedEvent}
           title={
             <div>
-              <h2 className="flex items-center font-bold text-xl gap-2">
-                {selectedEvent.end.getHours() >= 20 && <LateShowLabel />}
+              <div className="flex items-center font-bold text-xl gap-2">
                 {/* Status label */}
                 <span
                   className={clsx(
@@ -298,13 +297,14 @@ export default function MovieCalendar() {
                     販売未設定
                   </span>
                 )}
-                <span>
+                {selectedEvent.end.getHours() >= 20 && <LateShowLabel />}
+                <h2>
                   {initialScreens.current.find(
                     (screen) => screen.id === selectedEvent.resource.screenId
                   )?.name || 'スクリーン未設定'}{' '}
                   - {selectedEvent.title || '作品未設定'}
-                </span>
-              </h2>
+                </h2>
+              </div>
               <div
                 className={clsx(
                   selectedEvent.resource.isProduct &&
