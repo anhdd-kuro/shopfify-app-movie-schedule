@@ -3,85 +3,97 @@ import { Checkbox } from '@shopify/polaris'
 import { Tooltip } from 'react-tooltip'
 import clsx from 'clsx'
 
-export default function TicketTypes() {
+export default function TicketTypes({ isLateShow }: { isLateShow?: boolean }) {
   const [checkboxState, setCheckboxState] = useState([
     {
+      id: 1,
       label: '一般',
-      checked: true,
+      checked: !isLateShow,
       group: 'age',
-      price: 1000,
-      disabled: false,
+      price: 1800,
+      disabled: isLateShow,
+      description: 'デフォルトで選択されています',
     },
     {
-      label: '小学生',
+      id: 2,
+      label: '中・小学生',
       checked: true,
       group: 'age',
       price: 500,
       disabled: false,
+      description: '中学は要学生証',
     },
-    { label: '学生', checked: true, group: 'age', price: 800, disabled: false },
     {
+      id: 3,
+      label: '幼児',
+      checked: true,
+      group: 'age',
+      price: 800,
+      disabled: false,
+      description: '3～6歳',
+    },
+    {
+      id: 4,
       label: 'シニア',
       checked: true,
       group: 'age',
       price: 700,
       disabled: true,
+      description: '60歳以上',
     },
     {
+      id: 5,
       label: 'レイトショー (終了10時以降)',
-      checked: true,
+      checked: isLateShow,
       group: 'time',
       price: 1200,
-      disabled: false,
+      disabled: !isLateShow,
+      description: '20時以降の上映回',
     },
     {
+      id: 6,
       label: '団体割引（一般）',
       checked: true,
       group: 'discount',
       price: 900,
       disabled: false,
+      description: '10名以上',
     },
     {
+      id: 7,
       label: '団体割引（学生）',
       checked: true,
       group: 'discount',
       price: 700,
       disabled: false,
+      description: '10名以上, 要学生証',
     },
     {
-      label: '火曜日の割引',
+      id: 8,
+      label: 'KBCシネマ会員サービスデー',
       checked: true,
       group: 'discount',
       price: 800,
       disabled: false,
+      description: '毎週火・木曜日、会員限定',
     },
     {
-      label: '木曜日の割引',
-      checked: true,
-      group: 'discount',
-      price: 800,
-      disabled: false,
-    },
-    {
-      label: 'シニア',
-      checked: true,
-      group: 'discount',
-      price: 500,
-      disabled: false,
-    },
-    {
+      id: 9,
       label: 'ムビチケ当日券（一般）',
       checked: true,
       group: 'movieTicket',
       price: 1500,
       disabled: false,
+      description: 'ムビチケ当日券',
     },
     {
+      id: 10,
       label: 'ムビチケ当日券（小人）',
       checked: true,
       group: 'movieTicket',
       price: 1000,
       disabled: false,
+      description: 'ムビチケ当日券',
     },
   ])
 
@@ -106,7 +118,7 @@ export default function TicketTypes() {
 
   return (
     <dl className="space-y-4">
-      <dt className="font-bold text-lg">年齢週別</dt>
+      <dt className="font-bold text-lg">年齢種別</dt>
       <dd className="flex gap-8">
         {ageCheckboxes.map((checkbox, index) => (
           <CheckboxWithTooltip
@@ -158,11 +170,13 @@ export default function TicketTypes() {
 const CheckboxWithTooltip = ({
   label,
   price,
+  description,
   checked,
   onChange,
   disabled,
 }: {
   label: string
+  description: string
   price: number
   checked: boolean
   disabled: boolean
@@ -170,14 +184,17 @@ const CheckboxWithTooltip = ({
 }) => {
   return (
     <div data-tooltip-id={label} className={clsx(disabled && 'text-gray-400')}>
-      <Checkbox
-        label={label}
-        checked={checked && !disabled}
-        onChange={!disabled && onChange}
-      />
+      <div className="flex items-center gap-2">
+        <Checkbox
+          label={label}
+          checked={checked && !disabled}
+          onChange={!disabled && onChange}
+        />
+      </div>
       <Tooltip id={label} opacity={1}>
-        <div>
+        <div className="text-center">
           <p>{price.toLocaleString('ja-JP')}円</p>
+          <p>{description}</p>
         </div>
       </Tooltip>
     </div>

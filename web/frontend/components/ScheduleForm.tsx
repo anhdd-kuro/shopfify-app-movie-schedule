@@ -1,5 +1,6 @@
 import { toast } from 'react-toastify'
 import { Movie } from '../pages/schedule.data'
+import moment from 'moment-timezone'
 
 type Screen = {
   id: number
@@ -38,9 +39,9 @@ export default function ScheduleForm({
             movie.resource.screenId === selectedMovie.resource.screenId
           ) {
             const newStart = new Date(data['start-time'] as string)
-            newStart.setUTCHours(newStart.getUTCHours() + 9)
+            newStart.setUTCHours(newStart.getUTCHours())
             const newEnd = new Date(data['end-time'] as string)
-            newEnd.setUTCHours(newEnd.getUTCHours() + 9)
+            newEnd.setUTCHours(newEnd.getUTCHours())
 
             const movieId = +data['movieId']
             const movieById = movies.find((e) => e.resource.id === movieId)
@@ -125,7 +126,9 @@ export default function ScheduleForm({
             type="datetime-local"
             id="start-time"
             name="start-time"
-            defaultValue={selectedMovie.start.toISOString().slice(0, 16)}
+            defaultValue={moment(selectedMovie.start).format(
+              'YYYY-MM-DDTHH:mm'
+            )}
             className="border border-gray-400 p-2 rounded-md w-1/3"
           />
         </div>
@@ -137,7 +140,7 @@ export default function ScheduleForm({
             type="datetime-local"
             id="end-time"
             name="end-time"
-            defaultValue={selectedMovie.end.toISOString().slice(0, 16)}
+            defaultValue={moment(selectedMovie.end).format('YYYY-MM-DDTHH:mm')}
             className="border border-gray-400 p-2 rounded-md w-1/3"
           />
         </div>
