@@ -23,7 +23,7 @@ import { Movie, initialData } from './schedule.data'
 import Select from 'react-select'
 import moment from 'moment-timezone'
 import { customAlphabet } from 'nanoid'
-import { ScheduleForm, TicketTypes } from '../components'
+import { LateShowLabel, ScheduleForm, TicketTypes } from '../components'
 import { OutsideDisplayView } from '../components'
 
 const localizer = momentLocalizer(moment)
@@ -275,20 +275,7 @@ export default function MovieCalendar() {
           title={
             <div>
               <h2 className="flex items-center font-bold text-xl gap-2">
-                {selectedEvent.end.getHours() >= 20 && (
-                  <div className="bg-[#6372e5] py-1 px-4 rounded-md flex items-center justify-center overflow-hidden">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      viewBox="0 0 20 20"
-                      fill="#fff"
-                    >
-                      <title>moon</title>
-                      <path d="M17.39 15.14A7.33 7.33 0 0 1 11.75 1.6c.23-.11.56-.23.79-.34a8.19 8.19 0 0 0-5.41.45 9 9 0 1 0 7 16.58 8.42 8.42 0 0 0 4.29-3.84 5.3 5.3 0 0 1-1.03.69z" />
-                    </svg>
-                  </div>
-                )}
+                {selectedEvent.end.getHours() >= 20 && <LateShowLabel />}
                 {/* Status label */}
                 <span
                   className={clsx(
