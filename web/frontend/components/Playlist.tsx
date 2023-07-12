@@ -9,23 +9,27 @@ export type PlaylistItem = {
   length: number
 }
 
-const playlistData = [
-  { title: '君の名は（予告編）', length: 23 },
-  { title: '天気の子（予告編）', length: 27 },
-  { title: '千と千尋の神隠し（予告編）', length: 19 },
-  { title: 'となりのトトロ（予告編）', length: 28 },
-  { title: 'ハウルの動く城（予告編）', length: 21 },
-  { title: '風立ちぬ（予告編）', length: 22 },
-  { title: 'おおかみこどもの雨と雪（予告編）', length: 25 },
-  { title: '秒速5センチメートル（予告編）', length: 16 },
-  { title: '聲の形（予告編）', length: 30 },
-  { title: 'あの日見た花の名前を僕達はまだ知らない。（予告編）', length: 12 },
-  { title: '盗撮映像', length: 12 },
+const playlistData: PlaylistItem[] = [
+  { id: nanoid(), title: '君の名は（予告編）', length: 23 },
+  { id: nanoid(), title: '天気の子（予告編）', length: 27 },
+  { id: nanoid(), title: '千と千尋の神隠し（予告編）', length: 19 },
+  { id: nanoid(), title: 'となりのトトロ（予告編）', length: 28 },
+  { id: nanoid(), title: 'ハウルの動く城（予告編）', length: 21 },
+  { id: nanoid(), title: '風立ちぬ（予告編）', length: 22 },
+  { id: nanoid(), title: 'おおかみこどもの雨と雪（予告編）', length: 25 },
+  { id: nanoid(), title: '秒速5センチメートル（予告編）', length: 16 },
+  { id: nanoid(), title: '聲の形（予告編）', length: 30 },
+  {
+    id: nanoid(),
+    title: 'あの日見た花の名前を僕達はまだ知らない。（予告編）',
+    length: 12,
+  },
+  { id: nanoid(), title: '盗撮映像', length: 13 },
 ]
 
 const playListOptions = playlistData.map((item) => ({
   label: item.title,
-  value: item.length,
+  value: item.id,
 }))
 
 type PlaylistProps = {
@@ -145,7 +149,7 @@ export default function Playlist({ onSubmit }: PlaylistProps) {
                             setPlaylist((cur) => {
                               const newPlaylist = [...cur]
                               newPlaylist[index].title = option.label
-                              newPlaylist[index].length = option.value
+                              newPlaylist[index].id = option.value
                               return newPlaylist
                             })
                           }
@@ -186,7 +190,7 @@ export default function Playlist({ onSubmit }: PlaylistProps) {
         </button>
         <button
           onClick={handleSubmit}
-          className="bg-green-500 text-white px-4 py-2 rounded-md w-1/4"
+          className="bg-green-600 text-white px-4 py-2 rounded-md w-1/4"
         >
           確認
         </button>
