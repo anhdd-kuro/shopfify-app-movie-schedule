@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { Button, Modal } from '@shopify/polaris'
 import { toast } from 'react-toastify'
 import { createPortal } from 'react-dom'
+import clsx from 'clsx'
 
 export default function Screen({ id = 1 }: { id?: number }) {
   const [openModal, setOpenModal] = useState(false)
@@ -70,15 +71,25 @@ export default function Screen({ id = 1 }: { id?: number }) {
     },
     [selectedSeats]
   )
+
+  const parentModal = document.querySelector('.Polaris-Modal-Dialog__Modal')
+
   return (
     <div className="flex-center flex-col">
       {id === 1 && <Seat1 className="flex-center screenImg" />}
       {id !== 1 && <Seat2 className="flex-center screenImg" />}
-      {selectedSeats.length > 0 && (
-        <div className="fixed bottom-4 right-4">
-          <Button onClick={() => setOpenModal(true)}>一括編集</Button>
-        </div>
-      )}
+      {selectedSeats.length > 0 &&
+        createPortal(
+          <div
+            className={clsx(
+              'bottom-4 right-6',
+              parentModal ? 'absolute' : 'fixed'
+            )}
+          >
+            <Button onClick={() => setOpenModal(true)}>一括編集</Button>
+          </div>,
+          parentModal || document.body
+        )}
       {createPortal(
         <Modal
           open={openModal}
