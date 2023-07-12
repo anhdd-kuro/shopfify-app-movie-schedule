@@ -122,7 +122,7 @@ export default function TicketTypes({ isLateShow }: { isLateShow?: boolean }) {
       <dd className="flex gap-8">
         {ageCheckboxes.map((checkbox, index) => (
           <CheckboxWithTooltip
-            key={checkbox.label}
+            key={checkbox.id}
             {...checkbox}
             onChange={() => handleCheckboxChange(index)}
           />
@@ -133,7 +133,7 @@ export default function TicketTypes({ isLateShow }: { isLateShow?: boolean }) {
       <dd className="flex gap-8">
         {timeCheckboxes.map((checkbox, index) => (
           <CheckboxWithTooltip
-            key={checkbox.label}
+            key={checkbox.id}
             {...checkbox}
             onChange={() => handleCheckboxChange(index)}
           />
@@ -145,7 +145,7 @@ export default function TicketTypes({ isLateShow }: { isLateShow?: boolean }) {
         {discountCheckboxes.map((checkbox, index) => (
           <>
             <CheckboxWithTooltip
-              key={checkbox.label}
+              key={checkbox.id}
               {...checkbox}
               onChange={() => handleCheckboxChange(index)}
             />
@@ -157,7 +157,7 @@ export default function TicketTypes({ isLateShow }: { isLateShow?: boolean }) {
       <dd className="flex gap-8">
         {movieTicketCheckboxes.map((checkbox, index) => (
           <CheckboxWithTooltip
-            key={checkbox.label}
+            key={checkbox.id}
             {...checkbox}
             onChange={() => handleCheckboxChange(index)}
           />

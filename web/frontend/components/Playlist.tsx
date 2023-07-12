@@ -1,12 +1,32 @@
 import { useCallback, useMemo, useState } from 'react'
 import { nanoid } from 'nanoid'
 import { Draggable, Droppable } from './DragDrop'
+import Select from 'react-select'
 
 export type PlaylistItem = {
   id: string
   title: string
-  length: string
+  length: number
 }
+
+const playlistData = [
+  { title: '君の名は（予告編）', length: 23 },
+  { title: '天気の子（予告編）', length: 27 },
+  { title: '千と千尋の神隠し（予告編）', length: 19 },
+  { title: 'となりのトトロ（予告編）', length: 28 },
+  { title: 'ハウルの動く城（予告編）', length: 21 },
+  { title: '風立ちぬ（予告編）', length: 22 },
+  { title: 'おおかみこどもの雨と雪（予告編）', length: 25 },
+  { title: '秒速5センチメートル（予告編）', length: 16 },
+  { title: '聲の形（予告編）', length: 30 },
+  { title: 'あの日見た花の名前を僕達はまだ知らない。（予告編）', length: 12 },
+  { title: '盗撮映像', length: 12 },
+]
+
+const playListOptions = playlistData.map((item) => ({
+  label: item.title,
+  value: item.length,
+}))
 
 type PlaylistProps = {
   onSubmit: (playlist: PlaylistItem[]) => void
@@ -17,7 +37,7 @@ export default function Playlist({ onSubmit }: PlaylistProps) {
     {
       id: '0',
       title: '本編',
-      length: '02:30:00',
+      length: 9000,
     },
   ])
 
@@ -26,24 +46,29 @@ export default function Playlist({ onSubmit }: PlaylistProps) {
     [playlist]
   )
 
-  const totalTime = useMemo(() => {
-    const totalInSeconds = playlist.reduce((total, item) => {
-      const [minutes, seconds] = item.length.split(':').map(Number)
-      return total + minutes * 60 + seconds
+  const totalTimeInSeconds = useMemo(() => {
+    return playlist.reduce((acc, cur) => {
+      return acc + cur.length
     }, 0)
-
-    const totalHours = Math.floor(totalInSeconds / 3600) || 0
-    const totalMinutes = Math.floor((totalInSeconds % 3600) / 60) || 0
-    const totalSeconds = totalInSeconds % 60 || 0
-
-    return `${totalHours.toString().padStart(2, '0')}:${totalMinutes
-      .toString()
-      .padStart(2, '0')}:${totalSeconds.toString().padStart(2, '0')}`
   }, [playlist])
 
+  const totalTimeInMinutesPlusFiveFloor = useMemo(() => {
+    const minutes = Math.floor(totalTimeInSeconds / 60) + 5
+    return `${minutes}分`
+  }, [totalTimeInSeconds])
+
+  const totalTimeInHH_MM_SS = useMemo(() => {
+    const hours = Math.floor(totalTimeInSeconds / 3600)
+    const minutes = Math.floor((totalTimeInSeconds % 3600) / 60)
+    const seconds = totalTimeInSeconds % 60
+    return `${hours.toString().padStart(2, '0')}:${minutes
+      .toString()
+      .padStart(2, '0')}:${seconds.toString().padStart(2, '0')} + 5分`
+  }, [totalTimeInSeconds])
+
   const handleAdd = () => {
-    const newItem = { id: nanoid(), title: '', length: '' }
-    setPlaylist([...playlist, newItem])
+    const newItem = { id: nanoid(), title: '', length: 0 }
+    setPlaylist([newItem, ...playlist])
   }
 
   const handleDelete = (id: string) => {
@@ -80,10 +105,10 @@ export default function Playlist({ onSubmit }: PlaylistProps) {
         id="playlist"
         accept={playlistId}
         Wrapper={() => (
-          <div className="flex flex-col gap-4 mb-4">
+          <div className="flex flex-col gap-4 mb-4 font-bold">
             {playlist.map((item, index) => (
-              <div key={item.id} className="flex items-center">
-                <div className="flex-center gap-x-2">
+              <div key={item.id} className="flex items-center w-full font-bold">
+                <div className="flex-center gap-4">
                   <Draggable
                     allAcceptTypes={playlistId}
                     onHover={(hoverItem) =>
@@ -100,34 +125,38 @@ export default function Playlist({ onSubmit }: PlaylistProps) {
                       </div>
                     )}
                   />
-                  <input
-                    type="text"
-                    placeholder="タイトル"
-                    value={playlist[index]?.title}
-                    onChange={(e) =>
-                      setPlaylist((cur) => {
-                        const newPlaylist = [...cur]
-                        newPlaylist[index].title = e.target.value
-                        return newPlaylist
-                      })
-                    }
-                    readOnly={playlist[index]?.id === '0'}
-                    className="p-2 border border-gray-400 rounded-md"
-                  />
-                  <input
-                    type="text"
-                    placeholder="hh:mm:ss"
-                    value={playlist[index]?.length}
-                    onChange={(e) =>
-                      setPlaylist((cur) => {
-                        const newPlaylist = [...cur]
-                        newPlaylist[index].length = e.target.value
-                        return newPlaylist
-                      })
-                    }
-                    readOnly={playlist[index]?.id === '0'}
-                    className="p-2 border border-gray-400 rounded-md"
-                  />
+                  {item.id === '0' ? (
+                    <>
+                      <p className="font-bold w-[20rem]">{item.title}</p>
+                      <p>
+                        {item.length / 60}
+                        <strong className="font-bold">分</strong>
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <div className="w-[20rem]">
+                        <Select
+                          options={playListOptions}
+                          value={playListOptions.find(
+                            (option) => option.label === item.title
+                          )}
+                          onChange={(option) =>
+                            setPlaylist((cur) => {
+                              const newPlaylist = [...cur]
+                              newPlaylist[index].title = option.label
+                              newPlaylist[index].length = option.value
+                              return newPlaylist
+                            })
+                          }
+                        />
+                      </div>
+                      <p>
+                        {playlist[index]?.length}
+                        <strong className="font-bold">秒</strong>
+                      </p>
+                    </>
+                  )}
                   {playlist[index]?.id !== '0' && (
                     <button
                       onClick={() => handleDelete(item.id)}
@@ -143,7 +172,12 @@ export default function Playlist({ onSubmit }: PlaylistProps) {
         )}
       />
       <div className="flex flex-col gap-4">
-        {totalTime && <p className="font-bold">Total: {totalTime}</p>}
+        <p className="space-x-2">
+          <strong className="font-bold">
+            Total: {totalTimeInMinutesPlusFiveFloor}
+          </strong>
+          <span className="italic">( {totalTimeInHH_MM_SS} )</span>
+        </p>
         <button
           onClick={handleAdd}
           className="bg-blue-500 text-white px-4 py-2 rounded-md w-10"
@@ -154,7 +188,7 @@ export default function Playlist({ onSubmit }: PlaylistProps) {
           onClick={handleSubmit}
           className="bg-green-500 text-white px-4 py-2 rounded-md w-1/4"
         >
-          Submit
+          確認
         </button>
       </div>
     </div>

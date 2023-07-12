@@ -87,3 +87,7 @@
 .screenImg .st5 {
   font-size: 20px;
 }
+
+.Polaris-Modal-CloseButton {
+  align-self: start;
+}

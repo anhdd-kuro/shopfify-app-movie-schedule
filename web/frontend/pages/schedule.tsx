@@ -359,7 +359,7 @@ export default function MovieCalendar() {
                 <div ref={tabContentWrapper} className="p-4 h-[80%]">
                   {tabs[selectedTab].id === 'seats' && (
                     <>
-                      <Screen />
+                      <Screen id={selectedEvent.resource.screenId} />
                     </>
                   )}
                   {tabs[selectedTab].id === 'schedule' && (
