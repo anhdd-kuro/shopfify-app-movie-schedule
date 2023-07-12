@@ -188,7 +188,8 @@ const CheckboxWithTooltip = ({
         <Checkbox
           label={label}
           checked={checked && !disabled}
-          onChange={!disabled && onChange}
+          disabled={disabled}
+          onChange={onChange}
         />
       </div>
       <Tooltip id={label} opacity={1}>
