@@ -50,7 +50,7 @@ export const initialData: Movie[] = [
       isActive: true,
       isProduct: true,
       screenId: 0,
-      lens: 'cs',
+      lens: 'CS',
     },
     title: 'The Shawshank Redemption',
     start: makeDateTime('future', {
@@ -72,7 +72,7 @@ export const initialData: Movie[] = [
       isActive: false,
       isProduct: false,
       screenId: 0,
-      lens: 'cs',
+      lens: 'CS',
     },
     title: 'The Godfather',
     start: makeDateTime('today', {
@@ -90,7 +90,7 @@ export const initialData: Movie[] = [
       isActive: true,
       isProduct: true,
       screenId: 0,
-      lens: 'cs',
+      lens: 'CS',
     },
     title: 'The Dark Knight',
     start: makeDateTime('today', { hour: 18, minute: 0 }),
@@ -102,7 +102,7 @@ export const initialData: Movie[] = [
       isActive: true,
       isProduct: true,
       screenId: 0,
-      lens: 'vv',
+      lens: 'VV',
     },
     title: 'Spider man',
     start: makeDateTime('today', { hour: 14, minute: 0 }),
@@ -114,7 +114,7 @@ export const initialData: Movie[] = [
       isActive: true,
       isProduct: true,
       screenId: 0,
-      lens: 'cs',
+      lens: 'CS',
     },
     title: '12 Angry Men',
     start: makeDateTime('future', {
@@ -136,7 +136,7 @@ export const initialData: Movie[] = [
       isActive: false,
       isProduct: true,
       screenId: 0,
-      lens: 'cs',
+      lens: 'CS',
     },
     title: "Schindler's List",
     start: makeDateTime('today', {
@@ -158,7 +158,7 @@ export const initialData: Movie[] = [
       isActive: true,
       isProduct: true,
       screenId: 0,
-      lens: 'cs',
+      lens: 'CS',
     },
     title: 'The Lord of the Rings: The Return of the King',
     start: makeDateTime('past', {
@@ -175,7 +175,7 @@ export const initialData: Movie[] = [
       isActive: true,
       isProduct: true,
       screenId: 0,
-      lens: 'cs',
+      lens: 'CS',
     },
     title: 'Pulp Fiction',
     start: makeDateTime('past', {
@@ -192,7 +192,7 @@ export const initialData: Movie[] = [
       isActive: true,
       isProduct: true,
       screenId: 0,
-      lens: 'vv',
+      lens: 'VV',
     },
     title: 'The Lord of the Rings: The Fellowship of the Ring',
     start: makeDateTime('past', {
@@ -209,7 +209,7 @@ export const initialData: Movie[] = [
       isActive: false,
       isProduct: true,
       screenId: 0,
-      lens: 'cs',
+      lens: 'CS',
     },
     title: 'Forrest Gump',
     start: makeDateTime('past', {
@@ -226,7 +226,7 @@ export const initialData: Movie[] = [
       isActive: false,
       isProduct: true,
       screenId: 0,
-      lens: 'cs',
+      lens: 'CS',
     },
     title: 'Inception',
     start: makeDateTime('past', {
@@ -248,7 +248,7 @@ export const initialData: Movie[] = [
       isActive: true,
       isProduct: true,
       screenId: 0,
-      lens: 'cs',
+      lens: 'CS',
     },
     title: 'Future Event',
     start: makeDateTime('future', {
@@ -270,7 +270,7 @@ export const initialData: Movie[] = [
       isActive: true,
       isProduct: true,
       screenId: 0,
-      lens: 'cs',
+      lens: 'CS',
     },
     title: 'Another Future Event',
     start: makeDateTime('future', {
