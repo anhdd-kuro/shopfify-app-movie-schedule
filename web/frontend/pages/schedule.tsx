@@ -214,7 +214,6 @@ export default function MovieCalendar() {
                 outside: OutsideDisplayView,
               } as ViewsProps<Movie> & { outside: React.FC }
             }
-            culture={moment.locale('ja')}
             localizer={localizer}
             formats={formats}
             events={allEventsInScreens}

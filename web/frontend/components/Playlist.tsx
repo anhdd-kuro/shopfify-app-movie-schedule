@@ -10,21 +10,21 @@ export type PlaylistItem = {
 }
 
 const playlistData: PlaylistItem[] = [
-  { id: nanoid(), title: '君の名は（予告編）', length: 23 },
-  { id: nanoid(), title: '天気の子（予告編）', length: 27 },
-  { id: nanoid(), title: '千と千尋の神隠し（予告編）', length: 19 },
-  { id: nanoid(), title: 'となりのトトロ（予告編）', length: 28 },
-  { id: nanoid(), title: 'ハウルの動く城（予告編）', length: 21 },
-  { id: nanoid(), title: '風立ちぬ（予告編）', length: 22 },
-  { id: nanoid(), title: 'おおかみこどもの雨と雪（予告編）', length: 25 },
-  { id: nanoid(), title: '秒速5センチメートル（予告編）', length: 16 },
-  { id: nanoid(), title: '聲の形（予告編）', length: 30 },
+  { id: '1', title: '君の名は（予告編）', length: 23 },
+  { id: '2', title: '天気の子（予告編）', length: 27 },
+  { id: '3', title: '千と千尋の神隠し（予告編）', length: 19 },
+  { id: '4', title: 'となりのトトロ（予告編）', length: 28 },
+  { id: '5', title: 'ハウルの動く城（予告編）', length: 21 },
+  { id: '6', title: '風立ちぬ（予告編）', length: 22 },
+  { id: '7', title: 'おおかみこどもの雨と雪（予告編）', length: 25 },
+  { id: '8', title: '秒速5センチメートル（予告編）', length: 16 },
+  { id: '9', title: '聲の形（予告編）', length: 30 },
   {
-    id: nanoid(),
+    id: '10',
     title: 'あの日見た花の名前を僕達はまだ知らない。（予告編）',
     length: 12,
   },
-  { id: nanoid(), title: '盗撮映像', length: 13 },
+  { id: '11', title: '盗撮映像', length: 13 },
 ]
 
 const playListOptions = playlistData.map((item) => ({
@@ -111,7 +111,10 @@ export default function Playlist({ onSubmit }: PlaylistProps) {
         Wrapper={() => (
           <div className="flex flex-col gap-4 mb-4 font-bold">
             {playlist.map((item, index) => (
-              <div key={item.id} className="flex items-center w-full font-bold">
+              <div
+                key={`${item.id}_${index}`}
+                className="flex items-center w-full font-bold"
+              >
                 <div className="flex-center gap-4">
                   <Draggable
                     allAcceptTypes={playlistId}
@@ -150,6 +153,9 @@ export default function Playlist({ onSubmit }: PlaylistProps) {
                               const newPlaylist = [...cur]
                               newPlaylist[index].title = option.label
                               newPlaylist[index].id = option.value
+                              newPlaylist[index].length = playlistData.find(
+                                (item) => item.id === option.value
+                              )?.length
                               return newPlaylist
                             })
                           }
