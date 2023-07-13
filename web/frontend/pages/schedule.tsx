@@ -278,7 +278,7 @@ export default function MovieCalendar() {
                 {/* Status label */}
                 <span
                   className={clsx(
-                    'px-2 py-1 rounded text-xs font-bold text-white'
+                    'px-2 py-1 rounded-full text-xs font-bold text-white'
                   )}
                   style={{
                     backgroundColor: selectedEvent.resource.isActive
@@ -291,18 +291,22 @@ export default function MovieCalendar() {
                 {!selectedEvent.resource.isProduct && (
                   <span
                     className={clsx(
-                      'px-2 py-1 rounded text-xs font-bold bg-gray-500 text-white'
+                      'px-2 py-1 rounded-full text-xs font-bold bg-gray-500 text-white'
                     )}
                   >
                     販売未設定
                   </span>
                 )}
                 {selectedEvent.end.getHours() >= 20 && <LateShowLabel />}
-                <h2>
+                <h2 className="flex items-center gap-2">
                   {initialScreens.current.find(
                     (screen) => screen.id === selectedEvent.resource.screenId
                   )?.name || 'スクリーン未設定'}{' '}
-                  - {selectedEvent.title || '作品未設定'}
+                  -
+                  <span className="text-center text-white bg-slate-800 px-2 py-1 rounded leading-none">
+                    {selectedEvent.resource.lens}
+                  </span>
+                  {selectedEvent.title || '作品未設定'}{' '}
                 </h2>
               </div>
               <div
@@ -515,6 +519,7 @@ const useDndCalendarEvents = (initialScreens: Screen[]) => {
         screenId: -1,
         isActive: false,
         isProduct: false,
+        lens: '',
       },
     }
 
