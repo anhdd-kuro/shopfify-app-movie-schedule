@@ -1,6 +1,17 @@
-export default function LateShowLabel() {
+import clsx from 'clsx'
+
+export default function LateShowLabel({
+  rounded = true,
+}: {
+  rounded?: boolean
+}) {
   return (
-    <div className="bg-[#6372e5] py-1 px-4 rounded-md flex items-center justify-center overflow-hidden">
+    <div
+      className={clsx(
+        'bg-[#6372e5] py-1 px-4 flex items-center justify-center overflow-hidden',
+        rounded && 'rounded-md'
+      )}
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="16"

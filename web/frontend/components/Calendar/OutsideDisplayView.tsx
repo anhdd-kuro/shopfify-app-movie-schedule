@@ -5,6 +5,7 @@ import { ViewStatic, ViewProps } from 'react-big-calendar'
 import { colors } from '../../pages/schedule'
 import { Checkbox } from '@shopify/polaris'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
+import LateShowLabel from '../../components/LateShowLabel'
 
 type GroupedEvents = {
   [screenId: string]: Movie[]
@@ -18,6 +19,7 @@ const CustomDay: React.FC<ViewProps<Movie>> & ViewStatic = ({
   const [isActiveChecked, setIsActiveChecked] = useState(true)
   const [isProductChecked, setIsProductChecked] = useState(true)
   const [isShowLabel, setIsShowLabel] = useState(true)
+  const [isShowLens, setIsShowLens] = useState(true)
 
   const [scheduleWrapperRef] = useAutoAnimate({})
 
@@ -79,6 +81,11 @@ const CustomDay: React.FC<ViewProps<Movie>> & ViewStatic = ({
             checked={isShowLabel}
             onChange={() => setIsShowLabel(!isShowLabel)}
           />
+          <Checkbox
+            label="レンズ表示"
+            checked={isShowLens}
+            onChange={() => setIsShowLens(!isShowLens)}
+          />
         </div>
       </div>
       <dl ref={scheduleWrapperRef} id="day-schedule" className="flex flex-wrap">
@@ -91,7 +98,7 @@ const CustomDay: React.FC<ViewProps<Movie>> & ViewStatic = ({
                 backgroundColor: colors[index],
               }}
             >
-              <h3 className="text-lg font-bold">Screen ID: {screenId}</h3>
+              <h3 className="text-lg font-bold">シネマ {screenId}</h3>
             </dt>
             <dd>
               <ul className="divide-gray-300">
@@ -100,35 +107,60 @@ const CustomDay: React.FC<ViewProps<Movie>> & ViewStatic = ({
                     key={event.resource.id}
                     className="flex divide-x border-b border-l border-r border-gray-300"
                   >
-                    <div className="flex-1 p-4 flex gap-2 items-center">
-                      <h4>{event.title}</h4> {/* Status label */}
-                      {isShowLabel && (
-                        <>
-                          <span
-                            className="px-2 py-1 rounded text-xs font-bold text-white"
-                            style={{
-                              backgroundColor: event.resource.isActive
-                                ? colors[index]
-                                : 'gray',
-                            }}
-                          >
-                            {event.resource.isActive ? '販売中' : '非公開'}
-                          </span>
-                          {!event.resource.isProduct && (
-                            <span className="px-2 py-1 rounded text-xs font-bold bg-gray-500 text-white">
-                              販売未設定
+                    <div className="flex flex-col justify-end flex-1 divide-y divide-gray-100">
+                      <div className="flex gap-2 items-center p-4">
+                        <h4>{event.title}</h4> {/* Status label */}
+                        {isShowLabel && (
+                          <>
+                            <span
+                              className="px-2 py-1 rounded text-xs font-bold text-white"
+                              style={{
+                                backgroundColor: event.resource.isActive
+                                  ? colors[index]
+                                  : 'gray',
+                              }}
+                            >
+                              {event.resource.isActive ? '販売中' : '非公開'}
                             </span>
+                            {!event.resource.isProduct && (
+                              <span className="px-2 py-1 rounded text-xs font-bold bg-gray-500 text-white">
+                                販売未設定
+                              </span>
+                            )}
+                          </>
+                        )}
+                      </div>
+                      <div className="flex px-4 divide-x">
+                        {/* Total length in minutes */}
+                        {isShowLens && (
+                          <p className="text-center flex-1 py-2 font-bold">
+                            {event.resource.lens}
+                          </p>
+                        )}
+                        <p className="mr-0 ml-auto py-2 pl-4 font-bold">
+                          {Math.floor(
+                            (event.end.getTime() - event.start.getTime()) /
+                              1000 /
+                              60
                           )}
-                        </>
-                      )}
+                          分
+                        </p>
+                      </div>
                     </div>
-                    <div className="w-[100px] p-4 text-center">
-                      <p>
-                        <strong className="text-lg">
-                          {moment(event.start).format('HH:mm')}
-                        </strong>
-                        <br />~ {moment(event.end).format('HH:mm')}
+                    <div className="flex items-center flex-col w-[100px]text-center divide-y">
+                      <p className="flex-center px-4 py-2 flex-1">
+                        <span>
+                          <strong className="text-lg">
+                            {moment(event.start).format('HH:mm')}
+                          </strong>
+                          <br />~ {moment(event.end).format('HH:mm')}
+                        </span>
                       </p>
+                      {event.end.getHours() >= 20 && (
+                        <div className="w-full">
+                          <LateShowLabel rounded={false} />
+                        </div>
+                      )}
                     </div>
                   </li>
                 ))}
