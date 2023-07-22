@@ -147,6 +147,33 @@ app.get("/api/collections", async (req, res) => {
   }
 });
 
+
+
+app.get("/api/playlist", async (req, res) => {
+  try {
+    const graphqlClient = new shopify.api.clients.Graphql({
+      session: res.locals.shopify.session
+    });
+
+    console.log("Request Body",req.body)
+
+    const data = await graphqlClient.query({
+      data: {
+        query: GET_PLAYLIST,
+        variables: req.body,
+      },
+    });
+
+
+    res.send(data.body);
+  } catch (error) {
+    if (error instanceof GraphqlQueryError) {
+      return res.status(500).send({ error });
+    }
+    throw error;
+  }
+});
+
 app.use(serveStatic(STATIC_PATH, { index: false }));
 
 app.use("/*", shopify.ensureInstalledOnShop(), async (_req, res, _next) => {
@@ -208,4 +235,31 @@ const GET_DIS1COUNT = `
       }
     }
   }
+`
+
+const GET_PLAYLIST = `
+query getPlaylist {
+  metaobjects(first: 20, type: "playlist") {
+    nodes {
+      handle
+      fields {
+        key
+        value
+        references(first: 10) {
+          edges {
+            node {
+              ... on Metaobject {
+              	handle,
+                fields {
+                  key
+                  value
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
 `
