@@ -65,10 +65,18 @@ export default function Playlist({ onSubmit }: PlaylistProps) {
     },
   })
 
-  console.log(playlist)
+  const selectedPlayListTotalLengthMinutesSeconds = useMemo(() => {
+    if (!selectedPlaylist) return '0:00'
+    const totalSeconds = selectedPlaylist.list.reduce((acc, item) => {
+      return +item.length + acc
+    }, 0)
+    const minutes = Math.floor(totalSeconds / 60)
+    const seconds = totalSeconds % 60
+    return `${minutes}分${`${seconds}`.padStart(2, '0')}秒`
+  }, [selectedPlaylist])
 
   return (
-    <div>
+    <div className="space-y-4">
       <select
         value={selectedPlaylist?.title || ''}
         className="border p-2 rounded"
@@ -86,16 +94,23 @@ export default function Playlist({ onSubmit }: PlaylistProps) {
           </option>
         ))}
       </select>
-      {selectedPlaylist && (
-        <div className="">
-          <h2 className="text-xl font-bold">一覧</h2>
-          <ul>
-            {selectedPlaylist?.list.map((item, index) => (
-              <li key={index}>{item.title}</li>
-            ))}
-          </ul>
-        </div>
-      )}
+      <div className="bg-gray-100 p-4 rounded-lg">
+        {selectedPlaylist && (
+          <>
+            <ul>
+              {selectedPlaylist?.list.map((item, index) => (
+                <li key={index} className="flex justify-between py-2">
+                  <h2 className="text-medium font-bold">{item.title}</h2>
+                  <p className="text-gray-500">{item.length}秒</p>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-4 text-lg text-right">
+              {selectedPlayListTotalLengthMinutesSeconds}
+            </p>
+          </>
+        )}
+      </div>
     </div>
   )
 }
