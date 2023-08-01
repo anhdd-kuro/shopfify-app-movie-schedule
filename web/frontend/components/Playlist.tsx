@@ -131,7 +131,20 @@ export default function Playlist({
             <>
               {selectedPlaylist ? (
                 <div className="flex flex-col gap-4 divide-y">
-                  <div>
+                  <section className="">
+                    <h2 className="font-bold text-lg">確認状態</h2>
+                    <div className="flex gap-2 mt-2">
+                      <span className="p-2 bg-gray-500 text-white rounded">
+                        {movie.resource.screenId === 1 && (
+                          <>{selectedPlaylist.screen_1_check_status}</>
+                        )}
+                        {movie.resource.screenId === 2 && (
+                          <>{selectedPlaylist.screen_2_check_status}</>
+                        )}
+                      </span>
+                    </div>
+                  </section>
+                  <section className="py-4">
                     <h2 className="font-bold text-lg">プレイリスト詳細</h2>
                     <div className="bg-gray-100 py-4 px-8 rounded-lg mt-4">
                       <ol className="font-bold list-decimal divide-y">
@@ -166,8 +179,8 @@ export default function Playlist({
                         <li className="py-3">ライトアップ</li>
                       </ol>
                     </div>
-                  </div>
-                  <div className="py-4">
+                  </section>
+                  <section className="py-4">
                     <h2 className="font-bold text-lg">追加オプション</h2>
                     <form className="flex flex-col gap-2 mt-2">
                       <label className="flex items-center gap-2" htmlFor="">
@@ -175,7 +188,7 @@ export default function Playlist({
                         <span>BGMなし</span>
                       </label>
                     </form>
-                  </div>
+                  </section>
                 </div>
               ) : (
                 <p className="text-red-500 font-bold">
