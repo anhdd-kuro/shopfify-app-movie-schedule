@@ -149,18 +149,21 @@ app.get("/api/collections", async (req, res) => {
 
 
 
-app.get("/api/playlist", async (req, res) => {
+app.get<{ query: string }>("/api/trailer_set", async (req, res) => {
   try {
     const graphqlClient = new shopify.api.clients.Graphql({
       session: res.locals.shopify.session
     });
 
-    console.log("Request Body",req.body)
+    // console.log("Request Body",req.body)
+    const  { query } = req.query;
 
     const data = await graphqlClient.query({
       data: {
-        query: GET_PLAYLIST,
-        variables: req.body,
+        query: GET_TRAILER_SET,
+        variables: {
+          query
+        },
       },
     });
 
@@ -237,14 +240,15 @@ const GET_DIS1COUNT = `
   }
 `
 
-const GET_PLAYLIST = `
-query getPlaylist {
-  metaobjects(first: 20, type: "playlist") {
+const GET_TRAILER_SET = `
+query getTrailerSet($query: String!) {
+  metaobjects(first: 20, type: "trailer_set",sortKey: "display_name",query: $query) {
     nodes {
       handle
       fields {
         key
         value
+        type
         references(first: 10) {
           edges {
             node {
@@ -255,6 +259,15 @@ query getPlaylist {
                   value
                 }
               }
+            }
+          }
+        }
+        reference {
+          ... on Metaobject {
+            handle,
+            fields {
+              key
+              value
             }
           }
         }

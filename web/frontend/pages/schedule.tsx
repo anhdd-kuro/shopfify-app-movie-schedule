@@ -391,6 +391,9 @@ export default function MovieCalendar() {
                         onSubmit={(list) => {
                           console.log(list)
                         }}
+                        // movieTitle={selectedEvent.title.toString()}
+                        movie={selectedEvent}
+                        startDate={selectedEvent.start}
                       />
                     </div>
                   )}
