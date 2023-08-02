@@ -152,15 +152,28 @@ export default function Playlist({
                 <div className="flex flex-col gap-4 divide-y">
                   <section className="">
                     <h2 className="font-bold text-lg">確認状態</h2>
-                    <div className="flex gap-2 mt-2">
-                      <span className="p-2 bg-gray-500 text-white rounded">
-                        {movie.resource.screenId === 1 && (
-                          <>{selectedPlaylist.screen_1_check_status}</>
-                        )}
-                        {movie.resource.screenId === 2 && (
-                          <>{selectedPlaylist.screen_2_check_status}</>
-                        )}
-                      </span>
+                    <div className="gap-2 mt-4">
+                      {movie.resource.screenId === 1 && (
+                        <>
+                          <span className="p-2 bg-gray-500 text-white rounded">
+                            {selectedPlaylist.screen_1_check_status}
+                          </span>
+                        </>
+                      )}
+                      {movie.resource.screenId === 2 && (
+                        <>
+                          <span className="p-2 bg-gray-500 text-white rounded">
+                            {selectedPlaylist.screen_2_check_status}
+                          </span>
+                          {selectedPlaylist.screen_2_check_status !==
+                            'ダブルチェック済み' && (
+                            <p className="mt-4 text-red-500 font-bold italic">
+                              販売開始にはダブルチェックが必要です ! <br />
+                              チェックなしの場合は、チェック状態をクリアしてください。
+                            </p>
+                          )}
+                        </>
+                      )}
                     </div>
                   </section>
                   <section className="py-4">
