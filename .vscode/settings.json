@@ -3,5 +3,6 @@
     "clsx",
     "Metafield",
     "metafields"
-  ]
+  ],
+  "dimmer.enabled": false
 }

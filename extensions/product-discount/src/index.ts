@@ -56,6 +56,7 @@ export default /**
     return {
       discounts: [
         {
+          message: input?.buyerIdentity?.customer?.amountSpent,
           targets,
           value: {
             percentage: {

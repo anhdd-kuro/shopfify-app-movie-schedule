@@ -1,5 +1,5 @@
 import { toast } from 'react-toastify'
-import { useAppQuery } from '../hooks'
+import { useAppQuery } from '../../hooks'
 import { SmartCollection } from '@shopify/shopify-api/rest/admin/2023-04/smart_collection'
 
 // fetch metafields for a collection

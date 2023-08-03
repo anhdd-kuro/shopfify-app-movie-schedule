@@ -1,4 +1,12 @@
 query Input {
+  buyerIdentity {
+    email
+    customer {
+      id
+      amountSpent
+      displayName
+    }
+  }
   cart {
     lines {
       quantity
