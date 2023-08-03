@@ -219,7 +219,7 @@ export default function MovieCalendar() {
             events={allEventsInScreens}
             draggableAccessor={() => true}
             onEventDrop={handleEventDrop}
-            eventPropGetter={(event: Movie, start, end, isSelected) => {
+            eventPropGetter={(event: Movie) => {
               return {
                 className: clsx('cursor-grab'),
                 style: {
@@ -318,7 +318,10 @@ export default function MovieCalendar() {
                 )}
               >
                 {!selectedEvent.resource.isProduct && (
-                  <button className="p-10 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm">
+                  <button
+                    className="p-10 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm"
+                    disabled={true}
+                  >
                     商品として登録
                   </button>
                 )}

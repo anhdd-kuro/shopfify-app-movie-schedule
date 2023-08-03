@@ -23,6 +23,8 @@
   "plugins": ["react", "@typescript-eslint"],
   "rules": {
     "react/react-in-jsx-scope": 0,
-    "@typescript-eslint/ban-ts-comment": 0
+    "@typescript-eslint/ban-ts-comment": 0,
+    // allow any
+    "@typescript-eslint/no-explicit-any": 0
   }
 }

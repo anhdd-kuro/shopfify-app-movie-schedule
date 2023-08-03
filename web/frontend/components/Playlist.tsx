@@ -29,11 +29,7 @@ type PlaylistProps = {
   movie: Movie
 }
 
-export default function Playlist({
-  onSubmit,
-  startDate,
-  movie,
-}: PlaylistProps) {
+export default function Playlist({ startDate, movie }: PlaylistProps) {
   const [playlist, setPlaylist] = useState<PlayList[]>([])
 
   const selectedPlaylist = useMemo<PlayList>(() => {
