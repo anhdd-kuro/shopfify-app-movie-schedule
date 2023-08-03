@@ -1,4 +1,3 @@
-import { toast } from 'react-toastify'
 import { Movie } from '../pages/schedule.data'
 import moment from 'moment-timezone'
 

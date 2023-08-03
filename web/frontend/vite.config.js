@@ -46,7 +46,7 @@ if (host === 'localhost') {
 
 export default defineConfig({
   root: dirname(fileURLToPath(import.meta.url)),
-  plugins: [svgr(), react()],
+  plugins: [tsconfigPaths(), svgr(), react()],
 
   define: {
     'process.env.SHOPIFY_API_KEY': JSON.stringify(process.env.SHOPIFY_API_KEY),

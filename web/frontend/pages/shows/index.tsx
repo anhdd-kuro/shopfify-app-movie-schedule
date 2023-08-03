@@ -1,52 +1,37 @@
 import { toast } from 'react-toastify'
-import { useAppQuery } from '../../hooks'
-import { SmartCollection } from '@shopify/shopify-api/rest/admin/2023-04/smart_collection'
-
-// fetch metafields for a collection
-const useMetafieldsQuery = (collectionId: string) => {
-  const { data: metafields } = useAppQuery({
-    url: `/api/collections/${collectionId}/metafields`,
-    reactQueryOptions: {
-      onSuccess: () => {
-        toast.success('Metafields fetched successfully')
-      },
-    },
-  })
-
-  return metafields
-}
+import { useMetaobjectQuery } from '../../hooks'
+// import { SmartCollection } from '@shopify/shopify-api/rest/admin/2023-04/smart_collection'
 
 export default function Shows() {
-  const { data: collections, isLoading } = useAppQuery<SmartCollection[]>({
-    url: '/api/collections',
+  const { parsedData: movies, isLoading } = useMetaobjectQuery<Movie>({
+    url: '/api/movies',
     reactQueryOptions: {
-      onSuccess: (data) => {
-        console.log(data)
-        toast.success('Collections fetched successfully')
+      onSuccess: () => {
+        toast.success('Movies fetched successfully')
       },
     },
+    referenceKeys: ['thumbnail'],
+    listReferencesKeys: ['products', 'genre'],
   })
 
   return (
     <>
       {isLoading && <p>Loading...</p>}
       <div className="flex flex-wrap gap-4">
-        {collections?.map((collection) => (
-          <div key={collection.id} className="w-1/4">
+        {movies?.map((movie) => (
+          <div key={movie.title} className="w-1/4">
             <div className="bg-white rounded-lg shadow-lg">
               <img
                 className="w-full h-48 object-cover object-center"
                 // @ts-ignore-next-line
-                src={collection.image?.src || ''}
-                alt={collection.title}
+                src={movie.thumbnail?.image.url || ''}
+                alt={movie.thumbnail?.image.altText || movie.title}
               />
               <div className="p-4">
                 <h2 className="text-gray-900 font-bold text-2xl mb-2">
-                  {collection.title}
+                  {movie.title}
                 </h2>
-                <div
-                  dangerouslySetInnerHTML={{ __html: collection.body_html }}
-                />
+                {/* <div dangerouslySetInnerHTML={{ __html: movie.description }} /> */}
                 <ul>
                   {/* {useMetafieldsQuery(collection.id).map((metafield) => (
                     <li key={metafield.id}>

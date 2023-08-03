@@ -2,33 +2,87 @@ import { useMemo } from 'react'
 import { useAppQuery } from './useAppQuery'
 import { QueryKey, UseQueryOptions } from 'react-query'
 
-export const useMetaObjectQuery = <T extends { metaobjects: any }>({
+type ListReferences = {
+  nodes:
+    | {
+        handle: string
+        id: string
+        fields: {
+          key: string
+          value: string | number | null
+        }[]
+      }[]
+    | null
+}
+
+type Reference = {
+  image: {
+    url: string
+    altText: string
+  } | null
+} | null
+
+type MetaobjectResult = {
+  metaobjects: {
+    nodes: {
+      handle: string
+      id: string
+      fields: [
+        {
+          key: string
+          value: string | number | null
+          references: ListReferences | null
+          reference: Reference
+        },
+      ]
+    }[]
+  }
+}
+
+export const useMetaobjectQuery = <
+  T extends Record<string, string | number | ListReferences | Reference>,
+>({
   url,
   reactQueryOptions,
   referenceKeys,
+  listReferencesKeys,
 }: {
   url: string
   referenceKeys?: string[]
-  reactQueryOptions?: UseQueryOptions<T, unknown, T, QueryKey>
+  listReferencesKeys?: string[]
+  reactQueryOptions?: UseQueryOptions<
+    MetaobjectResult,
+    unknown,
+    MetaobjectResult,
+    QueryKey
+  >
 }) => {
-  const { data, ...result } = useAppQuery<T>({
+  const { data, ...result } = useAppQuery<MetaobjectResult>({
     url,
     reactQueryOptions,
   })
 
   const parsedData = useMemo(() => {
-    const _parsedData = data.metaobjects.nodes.map((node: any) => {
-      const fields = node.fields.reduce((acc: any, field: any) => {
-        if (referenceKeys.includes(field.key)) acc[field.key] = field.references
-        else acc[field.key] = acc[field.key] = field.value
+    const _parsedData = data?.metaobjects?.nodes?.map((node) => {
+      const fields = node.fields.reduce((acc, field) => {
+        if (listReferencesKeys?.includes(field.key)) {
+          acc[field.key as keyof T] = field.references as T[keyof T]
+          return acc
+        }
+        if (referenceKeys?.includes(field.key)) {
+          acc[field.key as keyof T] = field.reference as T[keyof T]
+          return acc
+        }
+
+        acc[field.key as keyof T] = field.value as T[keyof T]
         return acc
-      }, {})
+      }, {} as T)
 
       return fields
     })
 
     return _parsedData
-  }, [data])
+  }, [data, referenceKeys])
 
   return {
     parsedData,

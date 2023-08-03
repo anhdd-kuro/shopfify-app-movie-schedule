@@ -82,8 +82,6 @@ const runDiscountMutation = async (req: Request, res: Response, mutation: string
       session: res.locals.shopify.session
     });
 
-    console.log("Request Body",req.body)
-
     const data = await graphqlClient.query({
       data: {
         query: mutation,
@@ -134,12 +132,6 @@ app.get("/api/collections", async (req, res) => {
       session: res.locals.shopify.session,
       // fields: ['id', 'title', 'image', 'metafields']
     });
-
-    // const collections = await shopify.api.rest.SmartCollection.all({
-    //   session: res.locals.shopify.session,
-    // }).then((smartCollections) => {
-
-    // };
     res.status(200).send(collections.data);
 
   } catch (error) {
@@ -147,6 +139,27 @@ app.get("/api/collections", async (req, res) => {
   }
 });
 
+
+app.get("/api/movies", async (req, res) => {
+  console.log(res.locals)
+  try {
+    const graphqlClient = new shopify.api.clients.Graphql({
+      session: res.locals.shopify.session
+    });
+    // Get all collections with include images and metafields
+
+    const result = await graphqlClient.query<{ data: any }>({
+      data: {
+        query: GET_MOVIES,
+        variables: req.body,
+      },
+    });
+    res.send(result.body.data);
+
+  } catch (error) {
+    res.status(500).send(error)
+  }
+});
 
 
 app.get<{ query: string }>("/api/trailer_set", async (req, res) => {
@@ -268,6 +281,45 @@ query getTrailerSet($query: String!) {
             fields {
               key
               value
+            }
+          }
+        }
+      }
+    }
+  }
+}
+`
+
+const GET_MOVIES = `
+query getMovies {
+  metaobjects(first: 20, type: "movies") {
+    nodes {
+      handle
+      id
+      fields {
+        key
+        value
+        references(first: 10) {
+          nodes {
+            ... on Product {
+              id
+              title
+            }
+            ... on Metaobject {
+              handle
+              id
+              fields {
+                key
+                value
+              }
+            }
+          }
+        }
+        reference {
+          ... on MediaImage {
+            image {
+              altText
+              url
             }
           }
         }
