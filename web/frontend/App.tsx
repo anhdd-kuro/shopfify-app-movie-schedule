@@ -36,7 +36,7 @@ export default function App() {
                     destination: '/seats',
                   },
                   {
-                    label: 'Show Detail',
+                    label: '作品一覧',
                     destination: '/shows',
                   },
                   // {

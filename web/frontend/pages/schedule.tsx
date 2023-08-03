@@ -353,7 +353,7 @@ export default function MovieCalendar() {
           large
         >
           <Modal.Section>
-            <div className="flex flex-col justify-between h-[66vh]">
+            <div className="flex flex-col justify-between min-h-[66vh]">
               <Tabs
                 tabs={tabs}
                 selected={selectedTab}
