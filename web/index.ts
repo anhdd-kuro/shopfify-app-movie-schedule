@@ -3,6 +3,7 @@ import { join } from "path";
 import { readFileSync } from "fs";
 import express, { Request, Response } from "express";
 import serveStatic from "serve-static";
+import cors from "cors";
 
 import shopify from "./shopify";
 import GDPRWebhookHandlers from "./gdpr";
@@ -17,6 +18,8 @@ const STATIC_PATH =
     : `${process.cwd()}/frontend/`;
 
 const app = express();
+
+app.use(cors())
 
 // Set up Shopify authentication and webhook handling
 app.get(shopify.config.auth.path, shopify.auth.begin());
@@ -128,7 +131,8 @@ app.get("/api/products", async (req, res) => {
   try {
     const products = await shopify.api.rest.Product.all({
       session: res.locals.shopify.session,
-      status: "active"
+      status: "active",
+      limit: 250,
       // fields: ['id', 'title', 'image', 'metafields']
     });
     res.status(200).send(products.data);
@@ -152,7 +156,6 @@ app.get("/api/collections", async (req, res) => {
   }
 });
 
-
 app.get("/api/movies", async (req, res) => {
   console.log(res.locals)
   try {
@@ -173,7 +176,6 @@ app.get("/api/movies", async (req, res) => {
     res.status(500).send(error)
   }
 });
-
 
 app.get<{ query: string }>("/api/trailer_set", async (req, res) => {
   try {

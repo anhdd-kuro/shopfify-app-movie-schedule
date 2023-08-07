@@ -15,11 +15,6 @@
     "@shopify/app": "^3.46.5",
     "@shopify/cli": "^3.46.5",
     "@shopify/shopify_function": "0.0.3",
-    "javy": "0.1.0",
-    "nanoid": "^4.0.2",
-    "react-dnd": "^16.0.1",
-    "react-dnd-html5-backend": "^16.0.1",
-    "react-select": "^5.7.3",
-    "zod": "^3.21.4"
+    "javy": "0.1.0"
   }
 }
