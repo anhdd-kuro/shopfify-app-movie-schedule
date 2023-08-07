@@ -39,10 +39,10 @@ export default function App() {
                     label: '作品一覧',
                     destination: '/shows',
                   },
-                  // {
-                  //   label: 'Discount',
-                  //   destination: `discount/new`,
-                  // },
+                  /*          {
+                    label: 'Discount',
+                    destination: `discount/new`,
+                  }, */
                 ]}
               />
               <Routes pages={pages} />

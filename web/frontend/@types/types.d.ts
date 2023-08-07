@@ -1,6 +1,7 @@
 export {}
 declare global {
   type Movie = {
+    id: string
     handle: string
     title: string
     description: string
@@ -19,6 +20,13 @@ declare global {
         url: string
         altText: string
       }
+    }
+    products: {
+      nodes: {
+        id: string
+        title: string
+        handle: string
+      }[]
     }
   }
 }

@@ -37,7 +37,8 @@
     "react-select": "^5.7.4",
     "react-toastify": "^9.1.3",
     "react-tooltip": "^5.19.0",
-    "vite": "^4.4.8"
+    "vite": "^4.4.8",
+    "zustand": "^4.4.0"
   },
   "devDependencies": {
     "@shopify/shopify-api": "^7.5.0",

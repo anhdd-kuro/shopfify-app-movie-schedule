@@ -7,7 +7,8 @@ type ListReferences = {
     | {
         handle: string
         id: string
-        fields: {
+        title: string
+        fields?: {
           key: string
           value: string | number | null
         }[]
@@ -40,7 +41,10 @@ type MetaobjectResult = {
 }
 
 export const useMetaobjectQuery = <
-  T extends Record<string, string | number | ListReferences | Reference>,
+  T extends Record<string, string | number | ListReferences | Reference> & {
+    handle: string
+    id: string
+  },
 >({
   url,
   reactQueryOptions,
@@ -78,7 +82,7 @@ export const useMetaobjectQuery = <
         return acc
       }, {} as T)
 
-      return fields
+      return { ...fields, handle: node.handle, id: node.id }
     })
 
     return _parsedData

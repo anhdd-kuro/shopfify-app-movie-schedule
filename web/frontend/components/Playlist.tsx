@@ -154,6 +154,12 @@ export default function Playlist({ startDate, movie }: PlaylistProps) {
                           <span className="p-2 bg-gray-500 text-white rounded">
                             {selectedPlaylist.screen_1_check_status}
                           </span>
+                          {selectedPlaylist.screen_1_check_status !==
+                            'チェック済み' && (
+                            <p className="mt-4 text-red-500 font-bold italic">
+                              予告編セットはまだチェックしてません !
+                            </p>
+                          )}
                         </>
                       )}
                       {movie.resource.screenId === 2 && (
@@ -162,10 +168,9 @@ export default function Playlist({ startDate, movie }: PlaylistProps) {
                             {selectedPlaylist.screen_2_check_status}
                           </span>
                           {selectedPlaylist.screen_2_check_status !==
-                            'ダブルチェック済み' && (
+                            'チェック済み' && (
                             <p className="mt-4 text-red-500 font-bold italic">
-                              販売開始にはダブルチェックが必要です ! <br />
-                              チェックなしの場合は、チェック状態をクリアしてください。
+                              予告編セットはまだチェックしてません
                             </p>
                           )}
                         </>

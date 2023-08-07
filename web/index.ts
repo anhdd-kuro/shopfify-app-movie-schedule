@@ -124,6 +124,19 @@ app.get("/api/products/count", async (_req, res) => {
   }
 });
 
+app.get("/api/products", async (req, res) => {
+  try {
+    const products = await shopify.api.rest.Product.all({
+      session: res.locals.shopify.session,
+      status: "active"
+      // fields: ['id', 'title', 'image', 'metafields']
+    });
+    res.status(200).send(products.data);
+
+  } catch (error) {
+  }
+});
+
 app.get("/api/collections", async (req, res) => {
   console.log(res.locals)
   try {
