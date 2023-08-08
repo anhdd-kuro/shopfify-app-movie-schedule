@@ -16,7 +16,14 @@
 </form>
 
 <script>
-  const result = fetch('https://krb-kuro.myshopify.com/apps/test/movies', {
+  const result = fetch('/apps/store-proxy/proxy/movies', {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  }).then((response) => {
+    console.log(response);
+  });
+  const foo = fetch('/apps/store-proxy/api/movies', {
     headers: {
       'Content-Type': 'application/json',
     },

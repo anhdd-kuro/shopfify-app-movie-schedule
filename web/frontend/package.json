@@ -30,6 +30,8 @@
     "moment-timezone": "^0.5.43",
     "react": "^18.2.0",
     "react-big-calendar": "^1.8.1",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0",
     "react-i18next": "^13.0.3",
     "react-query": "^3.39.3",

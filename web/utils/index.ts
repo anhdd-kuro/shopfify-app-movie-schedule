@@ -8,7 +8,7 @@ import { Request } from 'express';
  * @param nonShopifyQueryParamKeys An array of keys to not use to create the signature. This is helpful if you have additional params added after shopify creates them.
  * @returns boolean
  */
-const verifyAppProxyHmac = (
+export const verifyAppProxyHmac = (
     parsedQueryString?: Request['query'],
     shopifySecret?: string,
     nonShopifyQueryParamKeys?: string[]
@@ -43,5 +43,3 @@ const verifyAppProxyHmac = (
 
     return signature === hash;
 };
-
-export default verifyAppProxyHmac;

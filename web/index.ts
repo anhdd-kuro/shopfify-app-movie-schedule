@@ -9,10 +9,12 @@ import shopify from "./shopify";
 import GDPRWebhookHandlers from "./gdpr";
 import apiCollectionsRouter from "./routes/api.collections";
 import { GraphqlQueryError } from '@shopify/shopify-api';
-import verifyAppProxyHmac from "utils";
+import {verifyAppProxyHmac} from "./utils";
 
 
 const verifyAppProxyRequest = (req: Request, res: Response, next: NextFunction) => {
+  console.log("verifyAppProxyHmac")
+
   if (verifyAppProxyHmac(req.query, process.env.SHOPIFY_API_SECRET)) {
       return next();
   }
@@ -220,22 +222,11 @@ app.get<{ query: string }>("/api/trailer_set", async (req, res) => {
   }
 });
 
-app.use(serveStatic(STATIC_PATH, { index: false }));
-
-app.use("/*", shopify.ensureInstalledOnShop(), async (_req, res, _next) => {
-  console.log("bbbbbbbbb")
-
-  return res
-    .status(200)
-    .set("Content-Type", "text/html")
-    .send(readFileSync(join(STATIC_PATH, "index.html")));
-});
-
 app.use("/proxy/*", verifyAppProxyRequest);
 
 app.get("/proxy/movies", async (req, res) => {
   console.log(res.locals)
-  /* try {
+  try {
     const graphqlClient = new shopify.api.clients.Graphql({
       session: res.locals.shopify.session
     });
@@ -251,8 +242,20 @@ app.get("/proxy/movies", async (req, res) => {
 
   } catch (error) {
     res.status(500).send(error)
-  } */
+  }
 });
+
+app.use(serveStatic(STATIC_PATH, { index: false }));
+
+app.use("/*", shopify.ensureInstalledOnShop(), async (_req, res, _next) => {
+  console.log("bbbbbbbbb")
+
+  return res
+    .status(200)
+    .set("Content-Type", "text/html")
+    .send(readFileSync(join(STATIC_PATH, "index.html")));
+});
+
 
 app.listen(PORT);
 
