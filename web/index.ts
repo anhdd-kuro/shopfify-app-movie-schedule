@@ -1,7 +1,7 @@
 // @ts-check
 import { join } from "path";
 import { readFileSync } from "fs";
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import serveStatic from "serve-static";
 import cors from "cors";
 
@@ -9,6 +9,15 @@ import shopify from "./shopify";
 import GDPRWebhookHandlers from "./gdpr";
 import apiCollectionsRouter from "./routes/api.collections";
 import { GraphqlQueryError } from '@shopify/shopify-api';
+import verifyAppProxyHmac from "utils";
+
+
+const verifyAppProxyRequest = (req: Request, res: Response, next: NextFunction) => {
+  if (verifyAppProxyHmac(req.query, process.env.SHOPIFY_API_SECRET)) {
+      return next();
+  }
+  return res.status(403).json({ errorMessage: 'I don\t think so.' });
+};
 
 const PORT = parseInt(process.env.BACKEND_PORT || process.env.PORT || "", 10);
 
@@ -127,8 +136,14 @@ app.get("/api/products/count", async (_req, res) => {
   }
 });
 
+// app.get("foo", async (req, res) => {
+//   console.log("asadadasdas")
+//   res.status(200).send("data");
+// });
+
 app.get("/api/products", async (req, res) => {
   try {
+    console.log("aaaaaa")
     const products = await shopify.api.rest.Product.all({
       session: res.locals.shopify.session,
       status: "active",
@@ -208,10 +223,35 @@ app.get<{ query: string }>("/api/trailer_set", async (req, res) => {
 app.use(serveStatic(STATIC_PATH, { index: false }));
 
 app.use("/*", shopify.ensureInstalledOnShop(), async (_req, res, _next) => {
+  console.log("bbbbbbbbb")
+
   return res
     .status(200)
     .set("Content-Type", "text/html")
     .send(readFileSync(join(STATIC_PATH, "index.html")));
+});
+
+app.use("/proxy/*", verifyAppProxyRequest);
+
+app.get("/proxy/movies", async (req, res) => {
+  console.log(res.locals)
+  /* try {
+    const graphqlClient = new shopify.api.clients.Graphql({
+      session: res.locals.shopify.session
+    });
+    // Get all collections with include images and metafields
+
+    const result = await graphqlClient.query<{ data: any }>({
+      data: {
+        query: GET_MOVIES,
+        variables: req.body,
+      },
+    });
+    res.send(result.body.data);
+
+  } catch (error) {
+    res.status(500).send(error)
+  } */
 });
 
 app.listen(PORT);

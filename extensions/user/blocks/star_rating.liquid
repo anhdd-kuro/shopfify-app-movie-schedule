@@ -14,15 +14,15 @@
     <input type="text">
   </label>
 </form>
+
 <script>
-  const result = fetch(
-    'https://johns-apparel.myshopify.com/apps/test/api/products',
-    Headers: {
+  const result = fetch('https://krb-kuro.myshopify.com/apps/test/movies', {
+    headers: {
       'Content-Type': 'application/json',
     },
-  )
-    .then((response) => response.json())
-    .then((data) => console.log(data));
+  }).then((response) => {
+    console.log(response);
+  });
 </script>
 
 {% schema %}
