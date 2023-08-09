@@ -5,21 +5,14 @@ import express, { NextFunction, Request, Response } from "express";
 import serveStatic from "serve-static";
 import cors from "cors";
 
-import shopify from "./shopify";
+import shopify, { sqliteSessionStorage } from "./shopify";
 import GDPRWebhookHandlers from "./gdpr";
 import apiCollectionsRouter from "./routes/api.collections";
-import { GraphqlQueryError } from '@shopify/shopify-api';
-import {verifyAppProxyHmac} from "./utils";
+import { GraphqlQueryError, Session } from '@shopify/shopify-api';
+import { verifyAppProxyHmac} from "./utils";
+import dotenv from "dotenv";
 
-
-const verifyAppProxyRequest = (req: Request, res: Response, next: NextFunction) => {
-  console.log("verifyAppProxyHmac")
-
-  if (verifyAppProxyHmac(req.query, process.env.SHOPIFY_API_SECRET)) {
-      return next();
-  }
-  return res.status(403).json({ errorMessage: 'I don\t think so.' });
-};
+dotenv.config();
 
 const PORT = parseInt(process.env.BACKEND_PORT || process.env.PORT || "", 10);
 
@@ -222,25 +215,63 @@ app.get<{ query: string }>("/api/trailer_set", async (req, res) => {
   }
 });
 
-app.use("/proxy/*", verifyAppProxyRequest);
 
-app.get("/proxy/movies", async (req, res) => {
-  console.log(res.locals)
+app.use("/proxy/*", (req: Request, res: Response, next: NextFunction) => {
+  console.log("verifyAppProxyHmac")
+
+  if (verifyAppProxyHmac(req.query, process.env.SHOPIFY_API_SECRET)) {
+      return next();
+  }
+  return res.status(403).json({ errorMessage: 'I don\t think so.' });
+});
+
+app.get("/proxy/user", async (req, res) => {
+  // console.log(req)
+  // console.log(process.env)
+  if(!req.query.shop || typeof req.query.shop !== "string") return res.status(500).send("shop is required")
+  // if(!req.query.logged_in_customer_id) return res.status(500).send("Please login first")
+
+  const session = await sqliteSessionStorage.findSessionsByShop(req.query.shop);
+  if(!session || session.length === 0) return res.status(500).send("Error")
+  console.log(session)
+
   try {
     const graphqlClient = new shopify.api.clients.Graphql({
-      session: res.locals.shopify.session
+      session: session[0]
+      // session: new Session( {
+      //   id: "proxy",
+      //   shop: req.query.shop,
+      //   state: '',
+      //   isOnline: false,
+      //   scope: process.env.SCOPE,
+      //   accessToken: process.env.SHOPIFY_PROXY_TOKEN,
+      // })
     });
     // Get all collections with include images and metafields
 
+    const randomString = (Math.random() + 1).toString(36).substring(7);
+
+
     const result = await graphqlClient.query<{ data: any }>({
       data: {
-        query: GET_MOVIES,
-        variables: req.body,
+        query: UPDATE_USER,
+        variables: {
+          "input": {
+            "id": "gid://shopify/Customer/7071947063570",
+            "metafields": [
+              {
+                "id": "gid://shopify/Metafield/29580292981010",
+                "value": "1231231231"
+              }
+            ]
+          }
+        },
       },
     });
     res.send(result.body.data);
 
   } catch (error) {
+    console.log(error)
     res.status(500).send(error)
   }
 });
@@ -248,8 +279,6 @@ app.get("/proxy/movies", async (req, res) => {
 app.use(serveStatic(STATIC_PATH, { index: false }));
 
 app.use("/*", shopify.ensureInstalledOnShop(), async (_req, res, _next) => {
-  console.log("bbbbbbbbb")
-
   return res
     .status(200)
     .set("Content-Type", "text/html")
@@ -382,6 +411,24 @@ query getMovies {
           }
         }
       }
+    }
+  }
+}
+`
+const UPDATE_USER = `
+mutation customerUpdate($input: CustomerInput!) {
+  customerUpdate(input: $input) {
+    customer {
+      metafields(first: 10) {
+        nodes {
+          key
+          value
+        }
+      }
+    }
+    userErrors {
+      field
+      message
     }
   }
 }

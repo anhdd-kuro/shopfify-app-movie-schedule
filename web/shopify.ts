@@ -10,6 +10,8 @@ import { restResources } from "@shopify/shopify-api/rest/admin/2023-04";
 
 const DB_PATH = `${process.cwd()}/database.sqlite`;
 
+export const sqliteSessionStorage = new SQLiteSessionStorage(DB_PATH);
+
 // The transactions with Shopify will always be marked as test transactions, unless NODE_ENV is production.
 // See the ensureBilling helper to learn more about billing in this template.
 const billingConfig = {
@@ -35,7 +37,7 @@ const shopify = shopifyApp({
     path: "/api/webhooks",
   },
   // This should be replaced with your preferred storage strategy
-  sessionStorage: new SQLiteSessionStorage(DB_PATH),
+  sessionStorage: sqliteSessionStorage,
 });
 
 export default shopify;

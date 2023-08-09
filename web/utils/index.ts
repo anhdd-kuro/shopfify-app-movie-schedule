@@ -1,5 +1,5 @@
-import crypto from 'crypto';
-import { Request } from 'express';
+import crypto from "crypto";
+import { Request } from "express";
 
 /**
  * This function will return true on a valid shopify application proxy request.
@@ -9,37 +9,38 @@ import { Request } from 'express';
  * @returns boolean
  */
 export const verifyAppProxyHmac = (
-    parsedQueryString?: Request['query'],
-    shopifySecret?: string,
-    nonShopifyQueryParamKeys?: string[]
+  parsedQueryString?: Request["query"],
+  shopifySecret?: string,
+  nonShopifyQueryParamKeys?: string[]
 ): boolean => {
-    if (
-        !parsedQueryString ||
-        typeof parsedQueryString !== 'object' ||
-        !shopifySecret
-    ) {
-        return false;
-    }
+  console.log("verifyAppProxyHmac");
 
-    const { signature, ...otherQueryParams } = parsedQueryString;
+  if (
+    !parsedQueryString ||
+    typeof parsedQueryString !== "object" ||
+    !shopifySecret
+  ) {
+    return false;
+  }
 
-    const input = Object.keys(otherQueryParams)
-        .filter(
-            (key) =>
-                !nonShopifyQueryParamKeys ||
-                !nonShopifyQueryParamKeys.includes(key)
-        )
-        .sort()
-        .map((key) => {
-            const value = otherQueryParams[key];
-            return `${key}=${value}`;
-        })
-        .join('');
+  const { signature, ...otherQueryParams } = parsedQueryString;
 
-    const hash = crypto
-        .createHmac('sha256', shopifySecret)
-        .update(input)
-        .digest('hex');
+  const input = Object.keys(otherQueryParams)
+    .filter(
+      (key) =>
+        !nonShopifyQueryParamKeys || !nonShopifyQueryParamKeys.includes(key)
+    )
+    .sort()
+    .map((key) => {
+      const value = otherQueryParams[key];
+      return `${key}=${value}`;
+    })
+    .join("");
 
-    return signature === hash;
+  const hash = crypto
+    .createHmac("sha256", shopifySecret)
+    .update(input)
+    .digest("hex");
+
+  return signature === hash;
 };
