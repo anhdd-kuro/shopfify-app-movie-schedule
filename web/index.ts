@@ -257,11 +257,12 @@ app.get("/proxy/user", async (req, res) => {
         query: UPDATE_USER,
         variables: {
           "input": {
-            "id": "gid://shopify/Customer/7071947063570",
+            "id": "gid://shopify/Customer/7174989644050",
             "metafields": [
               {
-                "id": "gid://shopify/Metafield/29580292981010",
-                "value": "1231231231"
+                // key: "memo",
+                "id": "gid://shopify/Metafield/29522858443026",
+                "value": randomString
               }
             ]
           }
@@ -419,6 +420,8 @@ const UPDATE_USER = `
 mutation customerUpdate($input: CustomerInput!) {
   customerUpdate(input: $input) {
     customer {
+      email
+      id
       metafields(first: 10) {
         nodes {
           key
